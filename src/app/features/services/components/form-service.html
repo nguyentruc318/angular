@@ -1,0 +1,167 @@
+<form
+  class="rounded-2xl bg-white p-6 shadow-xl shadow-violet-100 sm:p-8"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="mb-8 flex items-center gap-3">
+    <span class="flex size-10 items-center justify-center rounded-lg bg-violet-100 text-xl text-violet-700">
+      ✂
+    </span>
+    <div>
+      <h2 class="text-xl font-bold text-slate-900">Service details</h2>
+      <p class="mt-1 text-sm text-slate-500">Update the service information and booking settings.</p>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <div>
+      <p class="mb-3 text-base font-medium text-slate-900">Service image</p>
+
+      @if (imagePreviewUrl() ?? service()?.imageUrl; as imageUrl) {
+        <div class="relative aspect-[16/7] overflow-hidden rounded-xl bg-slate-100">
+          <img
+            [src]="imageUrl"
+            [alt]="service()?.imageAltText ?? service()?.name ?? 'Service image'"
+            class="size-full object-cover"
+          />
+          <label
+            for="service-image"
+            class="absolute inset-0 cursor-pointer bg-black/0 transition hover:bg-black/10"
+          >
+            <span class="sr-only">Change service image</span>
+          </label>
+        </div>
+      } @else {
+        <label
+          for="service-image"
+          class="flex aspect-[16/7] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl bg-slate-100 text-center transition hover:bg-slate-200"
+        >
+          <span class="text-4xl text-slate-400">⇧</span>
+          <span class="text-base font-medium text-slate-800">Click to upload image</span>
+          <span class="text-sm text-slate-400">PNG or JPG, up to 10MB</span>
+        </label>
+      }
+
+      <input
+        id="service-image"
+        type="file"
+        accept="image/png,image/jpeg"
+        class="sr-only"
+        (change)="onImageChange($event)"
+      />
+
+      @if (form.controls.imageFile.value; as file) {
+        <p class="mt-2 text-sm text-slate-500">Selected: {{ file.name }}</p>
+      }
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      <div>
+        <label for="service-name" class="mb-2 block text-sm font-medium text-slate-800">
+          Name
+        </label>
+        <input
+          id="service-name"
+          type="text"
+          formControlName="name"
+          class="h-12 w-full rounded-lg border border-slate-300 px-3 text-base outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+          [class.border-red-500]="form.controls.name.touched && form.controls.name.invalid"
+        />
+        @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+          <p class="mt-1 text-sm text-red-600">Service name is required.</p>
+        }
+      </div>
+
+      <div>
+        <label for="service-category" class="mb-2 block text-sm font-medium text-slate-800">
+          Category ID
+        </label>
+        <input
+          id="service-category"
+          type="text"
+          formControlName="categoryId"
+          class="h-12 w-full rounded-lg border border-slate-300 px-3 text-base outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+          [class.border-red-500]="form.controls.categoryId.touched && form.controls.categoryId.invalid"
+        />
+        @if (form.controls.categoryId.touched && form.controls.categoryId.hasError('required')) {
+          <p class="mt-1 text-sm text-red-600">Category is required.</p>
+        }
+      </div>
+
+      <div>
+        <label for="service-price" class="mb-2 block text-sm font-medium text-slate-800">
+          Price
+        </label>
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-500">£</span>
+          <input
+            id="service-price"
+            type="text"
+            inputmode="decimal"
+            formControlName="price"
+            class="h-12 w-full rounded-lg border border-slate-300 pl-8 pr-3 text-base outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+          />
+        </div>
+        <p class="mt-1 text-sm text-slate-500">For example, £42.00.</p>
+      </div>
+
+      <div>
+        <label for="service-duration" class="mb-2 block text-sm font-medium text-slate-800">
+          Duration (minutes)
+        </label>
+        <input
+          id="service-duration"
+          type="number"
+          min="1"
+          step="1"
+          inputmode="numeric"
+          formControlName="durationMinutes"
+          class="h-12 w-full rounded-lg border border-slate-300 px-3 text-base outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+          [class.border-red-500]="form.controls.durationMinutes.touched && form.controls.durationMinutes.invalid"
+        />
+        @if (form.controls.durationMinutes.touched && form.controls.durationMinutes.invalid) {
+          <p class="mt-1 text-sm text-red-600">Duration must be at least 1 minute.</p>
+        }
+      </div>
+    </div>
+
+    <div>
+      <label for="service-description" class="mb-2 block text-sm font-medium text-slate-800">
+        Description
+      </label>
+      <textarea
+        id="service-description"
+        rows="5"
+        formControlName="description"
+        placeholder="Describe this service"
+        class="min-h-32 w-full resize-y rounded-lg border border-slate-300 px-3 py-3 text-base outline-none placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+      ></textarea>
+    </div>
+
+    <label class="flex cursor-pointer items-center justify-between rounded-xl bg-slate-100 p-4">
+      <span>
+        <span class="block text-base font-medium text-slate-900">Active</span>
+        <span class="mt-1 block text-sm text-slate-500">Allow this service to be shown and booked.</span>
+      </span>
+      <input type="checkbox" formControlName="status" class="size-5 accent-violet-600" />
+    </label>
+
+    <label class="flex cursor-pointer items-center justify-between rounded-xl bg-slate-100 p-4">
+      <span>
+        <span class="block text-base font-medium text-slate-900">Popular service</span>
+        <span class="mt-1 block text-sm text-slate-500">Feature this service in the public services list.</span>
+      </span>
+      <input type="checkbox" formControlName="isPopular" class="size-5 accent-violet-600" />
+    </label>
+
+    <div class="flex justify-end border-t border-slate-200 pt-6">
+      <button
+        type="submit"
+        [disabled]="isSubmitting()"
+        class="rounded-lg bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {{ isSubmitting() ? 'Saving...' : submitLabel() }}
+      </button>
+    </div>
+  </div>
+</form>

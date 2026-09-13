@@ -1,0 +1,66 @@
+<section class="flex flex-col gap-6 p-6">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-900">Customers</h1>
+      <p class="mt-1 text-slate-500">View customer contact details and appointment history.</p>
+    </div>
+
+    @if (pagination(); as pageInfo) {
+      <span class="rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
+        {{ pageInfo.total }} total customers
+      </span>
+    }
+  </div>
+  @if (isLoading()) {
+    <div class="rounded-xl bg-white p-6 shadow">Loading customers...</div>
+  } @else if (errorMessage()) {
+    <div class="rounded-xl bg-white p-6 text-red-600 shadow">
+      {{ errorMessage() }}
+    </div>
+  } @else if (customers().length === 0) {
+    <div class="rounded-xl bg-white p-10 text-center shadow">
+      <p class="font-semibold text-slate-900">No customers yet</p>
+      <p class="mt-1 text-sm text-slate-500">
+        Customer records will appear here after their first booking.
+      </p>
+    </div>
+  } @else {
+    <div class="overflow-hidden rounded-xl bg-white shadow">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[55rem] text-left">
+          <thead class="bg-slate-100 text-sm text-slate-500">
+            <tr>
+              <th class="px-6 py-4 text-center font-semibold">Customer</th>
+              <th class="px-6 py-4 text-center font-semibold">Email</th>
+              <th class="px-6 py-4 text-center font-semibold">Phone</th>
+              <th class="px-6 py-4 text-center font-semibold">Bookings</th>
+              <th class="px-6 py-4 text-center font-semibold">Completed</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-slate-200">
+            @for (customer of customers(); track customer.id) {
+              <tr class="hover:bg-slate-50">
+                <td class="px-6 py-5 text-center font-medium">
+                  {{ customer.firstName }} {{ customer.lastName }}
+                </td>
+                <td class="px-6 py-5 text-center text-slate-500">
+                  {{ customer.email ?? '—' }}
+                </td>
+                <td class="px-6 py-5 text-center text-slate-500">
+                  {{ customer.phoneE164 ?? '—' }}
+                </td>
+                <td class="px-6 py-5 text-center">
+                  {{ customer.bookingCount ?? 0 }}
+                </td>
+                <td class="px-6 py-5 text-center text-emerald-700">
+                  {{ customer.completedBookingCount ?? 0 }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</section>

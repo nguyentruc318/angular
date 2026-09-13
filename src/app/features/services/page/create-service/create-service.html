@@ -1,0 +1,12 @@
+<section class="mx-auto w-full max-w-5xl p-6">
+  <h1 class="text-3xl font-bold text-slate-900">Create service</h1>
+  <p class="mt-1 text-slate-500">Add a new service for your salon.</p>
+
+  <div class="mt-6">
+    <app-form-service
+      submitLabel="Create service"
+      [isSubmitting]="isSaving()"
+      (submitted)="createService($event)"
+    />
+  </div>
+</section>

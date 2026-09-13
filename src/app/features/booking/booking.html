@@ -1,0 +1,104 @@
+<section class="flex flex-col gap-6 p-6">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-900">Bookings</h1>
+      <p class="mt-1 text-slate-500">View and manage upcoming salon appointments.</p>
+    </div>
+
+    @if (pagination(); as pageInfo) {
+      <span class="rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
+        {{ pageInfo.total }} total bookings
+      </span>
+    }
+  </div>
+  <div class="flex flex-wrap items-center gap-4">
+    <app-search-input
+      class="w-full sm:w-80"
+      id="booking-search"
+      label="Search bookings"
+      placeholder="Reference, customer, phone..."
+      [value]="search()"
+      (valueChange)="onSearchChange($event)"
+    />
+    <app-select
+      id="booking-status"
+      label="Status"
+      placeholder="All statuses"
+      [options]="statusOptions"
+      [value]="status() ?? ''"
+      (valueChange)="onStatusChange($event)"
+    />
+  </div>
+  @if (isLoading()) {
+    <div class="rounded-xl bg-white p-6 shadow">Loading bookings...</div>
+  } @else if (errorMessage(); as message) {
+    <div class="rounded-xl bg-white p-6 text-red-600 shadow">
+      {{ message }}
+    </div>
+  } @else if (bookings().length === 0) {
+    <div class="rounded-xl bg-white p-10 text-center shadow">
+      <p class="font-semibold text-slate-900">No bookings yet</p>
+      <p class="mt-1 text-sm text-slate-500">
+        New appointments will appear here when customers make a booking.
+      </p>
+    </div>
+  } @else {
+    <div class="overflow-hidden rounded-xl bg-white shadow">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[70rem] text-left">
+          <thead class="bg-slate-100 text-sm text-slate-500">
+            <tr>
+              <th class="px-6 py-4 text-center font-semibold">Booking</th>
+              <th class="px-6 py-4 text-center font-semibold">Type</th>
+              <th class="px-6 py-4 text-center font-semibold">Customer</th>
+              <th class="px-6 py-4 text-center font-semibold">Phone</th>
+              <th class="px-6 py-4 text-center font-semibold">Appointment</th>
+              <th class="px-6 py-4 text-center font-semibold">Status</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-slate-200">
+            @for (booking of bookings(); track booking.id) {
+              <tr class="transition-colors hover:bg-slate-50">
+                <td class="px-6 py-5 text-center font-semibold">
+                  {{ booking.bookingReference }}
+                </td>
+                <td class="px-6 py-5 text-center text-slate-500">
+                  {{ booking.type }}
+                </td>
+                <td class="px-6 py-5 text-center font-medium text-slate-900">
+                  {{ booking.customer.fullName }}
+                </td>
+                <td class="px-6 py-5 text-center text-slate-500">
+                  {{ booking.customer.phoneE164 }}
+                </td>
+                <td class="px-6 py-5 text-center text-slate-500">
+                  {{ booking.startsAt }}
+                </td>
+                <td class="px-6 py-5 text-center">
+                  <app-select
+                    [id]="'booking-status-' + booking.id"
+                    [options]="bookingStatusOptions"
+                    containerClass="min-w-52"
+                    [value]="booking.status"
+                    [disabled]="isBookingStatusUpdating(booking.id)"
+                    (valueChange)="onBookingStatusChange(booking, $event)"
+                  />
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (pagination(); as pageInfo) {
+      <app-pagination
+        [currentPage]="pageInfo.page"
+        [totalPages]="pageInfo.totalPages"
+        [disabled]="isLoading()"
+        (pageChange)="changePage($event)"
+      />
+    }
+  }
+</section>

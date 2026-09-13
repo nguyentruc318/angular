@@ -1,0 +1,43 @@
+@if (totalPages() > 1) {
+  <div class="flex items-center justify-center gap-3">
+    <button
+      type="button"
+      class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+      [disabled]="disabled() || currentPage() === 1"
+      (click)="previous()"
+    >
+      Previous
+    </button>
+
+    <div class="flex items-center gap-1">
+      @for (item of visiblePages(); track $index) {
+        @if (item === 'ellipsis') {
+          <span class="px-2 text-slate-500">…</span>
+        } @else {
+          <button
+            type="button"
+            class="size-9 rounded-lg text-sm font-medium"
+            [class.bg-violet-600]="item === currentPage()"
+            [class.text-white]="item === currentPage()"
+            [class.text-slate-700]="item !== currentPage()"
+            [class.hover:bg-slate-100]="item !== currentPage()"
+            [disabled]="disabled()"
+            [attr.aria-current]="item === currentPage() ? 'page' : null"
+            (click)="goTo(item)"
+          >
+            {{ item }}
+          </button>
+        }
+      }
+    </div>
+
+    <button
+      type="button"
+      class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+      [disabled]="disabled() || currentPage() === totalPages()"
+      (click)="next()"
+    >
+      Next
+    </button>
+  </div>
+}

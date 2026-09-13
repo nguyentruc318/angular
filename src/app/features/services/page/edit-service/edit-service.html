@@ -1,0 +1,29 @@
+<section class="mx-auto w-full max-w-5xl p-6">
+  @if (isLoading()) {
+    <div class="rounded-xl bg-white p-6 shadow">Loading service...</div>
+  } @else if (errorMessage(); as message) {
+    <div class="rounded-xl bg-white p-6 text-red-600 shadow">
+      {{ message }}
+    </div>
+  } @else if (service(); as service) {
+    <a
+      routerLink="/services"
+      class="mb-3 inline-flex items-center gap-2 rounded-lg px-1 py-2 text-sm font-medium text-slate-600 transition hover:text-violet-700"
+    >
+      <svg
+        class="size-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      Back to services
+    </a>
+    <app-form-service [service]="service" (submitted)="updateService($event)" />
+  }
+</section>
