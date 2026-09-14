@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../features/auth/services/auth.service';
+import { MockAuthService } from '../../features/auth/services/mock-auth.service';
 import { toast } from 'ngx-sonner';
 import { finalize } from 'rxjs';
 import { AuthStore } from '../../features/auth/store/auth.store';
@@ -11,12 +11,12 @@ import { AuthStore } from '../../features/auth/store/auth.store';
   templateUrl: './sidebar.html',
 })
 export class Sidebar {
-  private readonly authService = inject(AuthService);
+  private readonly authService = inject(MockAuthService);
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
 
   readonly isSigningOut = signal(false);
-   signOut(): void {
+  signOut(): void {
     if (this.isSigningOut()) return;
 
     this.isSigningOut.set(true);

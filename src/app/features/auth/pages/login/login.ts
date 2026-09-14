@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { MockAuthService } from '../../services/mock-auth.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs';
@@ -12,7 +12,7 @@ import { AuthStore } from '../../store/auth.store';
   imports: [ReactiveFormsModule],
 })
 export class Login {
-  private readonly authService = inject(AuthService);
+  private readonly authService = inject(MockAuthService);
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly authStore = inject(AuthStore);
@@ -30,6 +30,8 @@ export class Login {
     }
   }
   onSubmit(): void {
+    if (this.isSubmitting()) return;
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;

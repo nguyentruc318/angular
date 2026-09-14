@@ -1,175 +1,217 @@
 {
-  "customers": [
-    {
-      "id": "customer-001",
-      "firstName": "Emma",
-      "lastName": "Johnson",
-      "fullName": "Emma Johnson",
-      "email": "emma.johnson@example.com",
-      "phoneE164": "+14155550101",
-      "createdAt": "2026-08-12T09:30:00.000Z",
-      "updatedAt": "2026-09-10T14:20:00.000Z",
-      "bookingCount": 8,
-      "completedBookingCount": 7,
-      "totalSpentMinor": 42000,
-      "lastBookingAt": "2026-09-10T16:00:00.000Z"
-    },
-    {
-      "id": "customer-002",
-      "firstName": "Sophia",
-      "lastName": "Williams",
-      "fullName": "Sophia Williams",
-      "email": "sophia.williams@example.com",
-      "phoneE164": "+14155550102",
-      "createdAt": "2026-07-21T11:15:00.000Z",
-      "updatedAt": "2026-09-08T10:00:00.000Z",
-      "bookingCount": 5,
-      "completedBookingCount": 4,
-      "totalSpentMinor": 28500,
-      "lastBookingAt": "2026-09-08T13:30:00.000Z"
-    },
-    {
-      "id": "customer-003",
-      "firstName": "Olivia",
-      "lastName": "Brown",
-      "fullName": "Olivia Brown",
-      "email": "olivia.brown@example.com",
-      "phoneE164": "+14155550103",
-      "createdAt": "2026-09-01T08:45:00.000Z",
-      "updatedAt": "2026-09-12T09:10:00.000Z",
-      "bookingCount": 2,
-      "completedBookingCount": 1,
-      "totalSpentMinor": 12000,
-      "lastBookingAt": "2026-09-12T15:00:00.000Z"
-    }
-  ],
-  "bookings": [
-    {
-      "id": "booking-001",
-      "bookingReference": "ATN-1001",
-      "type": "gel-manicure",
-      "status": "pending_confirmation",
-      "startsAt": "2026-09-14T10:00:00.000Z",
-      "timezone": "America/New_York",
-      "customer": {
-        "id": "customer-001",
-        "fullName": "Emma Johnson",
-        "phoneE164": "+14155550101"
-      }
-    },
-    {
-      "id": "booking-002",
-      "bookingReference": "ATN-1002",
-      "type": "pedicure",
-      "status": "confirmed",
-      "startsAt": "2026-09-14T13:30:00.000Z",
-      "timezone": "America/New_York",
-      "customer": {
-        "id": "customer-002",
-        "fullName": "Sophia Williams",
-        "phoneE164": "+14155550102"
-      }
-    },
-    {
-      "id": "booking-003",
-      "bookingReference": "ATN-1003",
-      "type": "nail-art",
-      "status": "checked_out",
-      "startsAt": "2026-09-13T15:00:00.000Z",
-      "timezone": "America/New_York",
-      "customer": {
-        "id": "customer-003",
-        "fullName": "Olivia Brown",
-        "phoneE164": "+14155550103"
-      }
-    }
-  ],
-  "services": [
-    {
-      "id": "service-001",
-      "name": "Gel Manicure",
-      "slug": "gel-manicure",
-      "shortDescription": "Long-lasting gel manicure with a glossy finish.",
-      "description": "A detailed manicure finished with premium gel polish.",
-      "isAddon": false,
-      "isPopular": true,
-      "requiresConsent": false,
-      "categoryId": "category-manicure",
-      "categoryName": "Manicure",
-      "categorySlug": "manicure",
-      "imageUrl": "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
-      "imageAssetId": null,
-      "imageAltText": "Gel manicure",
-      "status": true,
-      "sortOrder": 1,
-      "branchServices": [
-        {
-          "id": "branch-service-001",
-          "status": "active",
-          "branchId": "branch-main",
-          "currency": "USD",
-          "priceMinor": 4200,
-          "depositMinor": 1000,
-          "maxAdvanceDays": 60,
-          "minLeadMinutes": 60,
-          "durationMinutes": 60,
-          "bufferAfterMinutes": 10,
-          "bufferBeforeMinutes": 5,
-          "onlineBookingEnabled": true,
-          "bookingDurationMinutes": 60
-        }
-      ]
-    },
-    {
-      "id": "service-002",
-      "name": "Classic Pedicure",
-      "slug": "classic-pedicure",
-      "shortDescription": "Relaxing pedicure with shaping and polish.",
-      "description": "A classic pedicure treatment for clean, polished nails.",
-      "isAddon": false,
-      "isPopular": true,
-      "requiresConsent": false,
-      "categoryId": "category-pedicure",
-      "categoryName": "Pedicure",
-      "categorySlug": "pedicure",
-      "imageUrl": "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
-      "imageAssetId": null,
-      "imageAltText": "Classic pedicure",
-      "status": true,
-      "sortOrder": 2,
-      "branchServices": [
-        {
-          "id": "branch-service-002",
-          "status": "active",
-          "branchId": "branch-main",
-          "currency": "USD",
-          "priceMinor": 3500,
-          "depositMinor": 800,
-          "maxAdvanceDays": 60,
-          "minLeadMinutes": 60,
-          "durationMinutes": 45,
-          "bufferAfterMinutes": 10,
-          "bufferBeforeMinutes": 5,
-          "onlineBookingEnabled": true,
-          "bookingDurationMinutes": 45
-        }
-      ]
-    }
-  ],
-  "staff": [
-    {
-      "id": "staff-001",
-      "name": "Mia Carter",
-      "email": "mia.carter@example.com",
-      "role": "Senior Nail Artist",
-      "status": "active"
-    },
-    {
-      "id": "staff-002",
-      "name": "Ava Martinez",
-      "email": "ava.martinez@example.com",
-      "role": "Nail Artist",
-      "status": "active"
-    }
-  ]
+    "customers":  [
+                      {
+                          "id":  "customer-001",
+                          "firstName":  "Emma",
+                          "lastName":  "Johnson",
+                          "fullName":  "Emma Johnson",
+                          "email":  "emma.johnson@example.com",
+                          "phoneE164":  "+14155550101",
+                          "createdAt":  "2026-08-12T09:30:00.000Z",
+                          "updatedAt":  "2026-09-10T14:20:00.000Z",
+                          "bookingCount":  8,
+                          "completedBookingCount":  7,
+                          "totalSpentMinor":  42000,
+                          "lastBookingAt":  "2026-09-10T16:00:00.000Z"
+                      },
+                      {
+                          "id":  "customer-002",
+                          "firstName":  "Sophia",
+                          "lastName":  "Williams",
+                          "fullName":  "Sophia Williams",
+                          "email":  "sophia.williams@example.com",
+                          "phoneE164":  "+14155550102",
+                          "createdAt":  "2026-07-21T11:15:00.000Z",
+                          "updatedAt":  "2026-09-08T10:00:00.000Z",
+                          "bookingCount":  5,
+                          "completedBookingCount":  4,
+                          "totalSpentMinor":  28500,
+                          "lastBookingAt":  "2026-09-08T13:30:00.000Z"
+                      },
+                      {
+                          "id":  "customer-003",
+                          "firstName":  "Olivia",
+                          "lastName":  "Brown",
+                          "fullName":  "Olivia Brown",
+                          "email":  "olivia.brown@example.com",
+                          "phoneE164":  "+14155550103",
+                          "createdAt":  "2026-09-01T08:45:00.000Z",
+                          "updatedAt":  "2026-09-12T09:10:00.000Z",
+                          "bookingCount":  2,
+                          "completedBookingCount":  1,
+                          "totalSpentMinor":  12000,
+                          "lastBookingAt":  "2026-09-12T15:00:00.000Z"
+                      }
+                  ],
+    "bookings":  [
+                     {
+                         "id":  "booking-001",
+                         "bookingReference":  "ATN-1001",
+                         "type":  "gel-manicure",
+                         "status":  "pending_confirmation",
+                         "startsAt":  "2026-09-14T10:00:00.000Z",
+                         "timezone":  "America/New_York",
+                         "customer":  {
+                                          "id":  "customer-001",
+                                          "fullName":  "Emma Johnson",
+                                          "phoneE164":  "+14155550101"
+                                      }
+                     },
+                     {
+                         "id":  "booking-002",
+                         "bookingReference":  "ATN-1002",
+                         "type":  "pedicure",
+                         "status":  "confirmed",
+                         "startsAt":  "2026-09-14T13:30:00.000Z",
+                         "timezone":  "America/New_York",
+                         "customer":  {
+                                          "id":  "customer-002",
+                                          "fullName":  "Sophia Williams",
+                                          "phoneE164":  "+14155550102"
+                                      }
+                     },
+                     {
+                         "id":  "booking-003",
+                         "bookingReference":  "ATN-1003",
+                         "type":  "nail-art",
+                         "status":  "checked_out",
+                         "startsAt":  "2026-09-13T15:00:00.000Z",
+                         "timezone":  "America/New_York",
+                         "customer":  {
+                                          "id":  "customer-003",
+                                          "fullName":  "Olivia Brown",
+                                          "phoneE164":  "+14155550103"
+                                      }
+                     }
+                 ],
+    "services":  [
+                     {
+                         "id":  "service-001",
+                         "name":  "Gel Manicure",
+                         "slug":  "gel-manicure",
+                         "shortDescription":  "Long-lasting gel manicure with a glossy finish.",
+                         "description":  "A detailed manicure finished with premium gel polish.",
+                         "isAddon":  false,
+                         "isPopular":  true,
+                         "requiresConsent":  false,
+                         "categoryId":  "category-manicure",
+                         "categoryName":  "Manicure",
+                         "categorySlug":  "manicure",
+                         "imageUrl":  "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
+                         "imageAssetId":  null,
+                         "imageAltText":  "Gel manicure",
+                         "status":  true,
+                         "sortOrder":  1,
+                         "branchServices":  [
+                                                {
+                                                    "id":  "branch-service-001",
+                                                    "status":  "active",
+                                                    "branchId":  "branch-main",
+                                                    "currency":  "USD",
+                                                    "priceMinor":  4200,
+                                                    "depositMinor":  1000,
+                                                    "maxAdvanceDays":  60,
+                                                    "minLeadMinutes":  60,
+                                                    "durationMinutes":  60,
+                                                    "bufferAfterMinutes":  10,
+                                                    "bufferBeforeMinutes":  5,
+                                                    "onlineBookingEnabled":  true,
+                                                    "bookingDurationMinutes":  60
+                                                }
+                                            ]
+                     },
+                     {
+                         "id":  "service-002",
+                         "name":  "Classic Pedicure",
+                         "slug":  "classic-pedicure",
+                         "shortDescription":  "Relaxing pedicure with shaping and polish.",
+                         "description":  "A classic pedicure treatment for clean, polished nails.",
+                         "isAddon":  false,
+                         "isPopular":  true,
+                         "requiresConsent":  false,
+                         "categoryId":  "category-pedicure",
+                         "categoryName":  "Pedicure",
+                         "categorySlug":  "pedicure",
+                         "imageUrl":  "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
+                         "imageAssetId":  null,
+                         "imageAltText":  "Classic pedicure",
+                         "status":  true,
+                         "sortOrder":  2,
+                         "branchServices":  [
+                                                {
+                                                    "id":  "branch-service-002",
+                                                    "status":  "active",
+                                                    "branchId":  "branch-main",
+                                                    "currency":  "USD",
+                                                    "priceMinor":  3500,
+                                                    "depositMinor":  800,
+                                                    "maxAdvanceDays":  60,
+                                                    "minLeadMinutes":  60,
+                                                    "durationMinutes":  45,
+                                                    "bufferAfterMinutes":  10,
+                                                    "bufferBeforeMinutes":  5,
+                                                    "onlineBookingEnabled":  true,
+                                                    "bookingDurationMinutes":  45
+                                                }
+                                            ]
+                     }
+                 ],
+    "staff":  [
+                  {
+                      "id":  "staff-001",
+                      "name":  "Mia Carter",
+                      "email":  "mia.carter@example.com",
+                      "role":  "Senior Nail Artist",
+                      "status":  "active"
+                  },
+                  {
+                      "id":  "staff-002",
+                      "name":  "Ava Martinez",
+                      "email":  "ava.martinez@example.com",
+                      "role":  "Nail Artist",
+                      "status":  "active"
+                  }
+              ],
+    "categories":  [
+                       {
+                           "id":  "category-manicure",
+                           "name":  "Manicure",
+                           "slug":  "manicure",
+                           "description":  "Dịch vụ chăm sóc và làm đẹp móng tay.",
+                           "imageUrl":  "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
+                           "isActive":  true
+                       },
+                       {
+                           "id":  "category-pedicure",
+                           "name":  "Pedicure",
+                           "slug":  "pedicure",
+                           "description":  "Dịch vụ chăm sóc và làm đẹp móng chân.",
+                           "imageUrl":  "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
+                           "isActive":  true
+                       },
+                       {
+                           "id":  "category-nail-art",
+                           "name":  "Nail Art",
+                           "slug":  "nail-art",
+                           "description":  "Dịch vụ tạo hình móng tay.",
+                           "imageUrl":  "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
+                           "isActive":  true
+                       }
+                   ],
+    "users":  [
+                  {
+                      "id":  "user-admin",
+                      "name":  "Demo Admin",
+                      "email":  "admin@example.com",
+                      "password":  "Demo123!",
+                      "isActive":  true
+                  },
+                  {
+                      "id":  "user-disabled",
+                      "name":  "Disabled Demo",
+                      "email":  "disabled@example.com",
+                      "password":  "Demo123!",
+                      "isActive":  false
+                  }
+              ]
 }

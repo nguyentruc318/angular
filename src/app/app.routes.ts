@@ -48,6 +48,23 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'categories',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () => import('./features/categories/category').then((m) => m.Categories),
+          },
+          {
+            path: 'create',
+            loadComponent: () =>
+              import('./features/categories/page/create-category/create-category').then(
+                (m) => m.CreateCategory,
+              ),
+          },
+        ],
+      },
+      {
         path: 'staff',
         loadComponent: () => import('./features/staff/staff').then((m) => m.Staff),
       },
