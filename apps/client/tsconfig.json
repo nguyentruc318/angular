@@ -1,24 +1,28 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "moduleResolution": "bundler"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
   },
   "files": [],
+  "include": [],
   "references": [
     {
-      "path": "./apps/100-day-ang/tsconfig.app.json"
+      "path": "./tsconfig.app.json"
     },
     {
-      "path": "./apps/100-day-ang/tsconfig.spec.json"
+      "path": "./tsconfig.spec.json"
     }
-  ],
-  "extends": "./tsconfig.base.json"
+  ]
 }

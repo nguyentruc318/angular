@@ -1,0 +1,102 @@
+﻿<form
+  class="rounded-2xl bg-white p-6 shadow-xl shadow-violet-100 sm:p-8"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="mb-6 flex items-center justify-between gap-4">
+    <div>
+      <h2 class="text-xl font-bold text-slate-900">Category details</h2>
+      <p class="mt-1 text-sm text-slate-500">
+        Set the information shown with this service category.
+      </p>
+    </div>
+    <div class="pt-6 lg:col-span-2">
+      <button
+        type="submit"
+        [disabled]="isSubmitting()"
+        class="rounded-lg bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {{ isSubmitting() ? 'Saving...' : submitLabel() }}
+      </button>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <div>
+      <label for="category-name" class="mb-2 block text-sm font-medium text-slate-800">Name</label>
+      <input
+        id="category-name"
+        type="text"
+        formControlName="name"
+        placeholder="For example, Manicure"
+        class="h-12 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+        [class.border-red-500]="form.controls.name.touched && form.controls.name.invalid"
+      />
+      @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+        <p class="mt-1 text-sm text-red-600">Category name is required.</p>
+      }
+    </div>
+
+    <div>
+      <label for="category-description" class="mb-2 block text-sm font-medium text-slate-800"
+        >Description</label
+      >
+      <textarea
+        id="category-description"
+        rows="4"
+        formControlName="description"
+        placeholder="Describe this category"
+        class="w-full rounded-lg border border-slate-300 px-3 py-3 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+        [class.border-red-500]="
+          form.controls.description.touched && form.controls.description.invalid
+        "
+      ></textarea>
+      @if (form.controls.description.touched && form.controls.description.hasError('required')) {
+        <p class="mt-1 text-sm text-red-600">Description is required.</p>
+      }
+    </div>
+
+    <div>
+      <p class="mb-3 text-sm font-medium text-slate-800">Category image</p>
+
+      @if (imagePreviewUrl(); as imageUrl) {
+        <div class="relative aspect-[16/7] overflow-hidden rounded-xl bg-slate-100">
+          <img [src]="imageUrl" alt="Category preview" class="size-full object-cover" />
+          <label
+            for="category-image"
+            class="absolute inset-0 cursor-pointer bg-black/0 transition hover:bg-black/10"
+          >
+            <span class="sr-only">Change category image</span>
+          </label>
+        </div>
+      } @else {
+        <label
+          for="category-image"
+          class="flex aspect-[16/7] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl bg-slate-100 text-center transition hover:bg-slate-200"
+        >
+          <span class="text-4xl text-slate-400">+</span>
+          <span class="text-base font-medium text-slate-800">Click to upload image</span>
+          <span class="text-sm text-slate-400">PNG or JPG, up to 10MB</span>
+        </label>
+      }
+
+      <input
+        id="category-image"
+        type="file"
+        accept="image/png,image/jpeg"
+        class="sr-only"
+        (change)="onImageChange($event)"
+      />
+
+      @if (form.controls.imageFile.value; as file) {
+        <p class="mt-2 text-sm text-slate-500">Selected: {{ file.name }}</p>
+      }
+    </div>
+
+    <lib-toggle
+      formControlName="isActive"
+      label="Active"
+      description="Show this category in the admin list."
+    />
+  </div>
+</form>
