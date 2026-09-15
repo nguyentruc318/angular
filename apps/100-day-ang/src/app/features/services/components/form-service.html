@@ -4,12 +4,16 @@
   (ngSubmit)="onSubmit()"
 >
   <div class="mb-8 flex items-center gap-3">
-    <span class="flex size-10 items-center justify-center rounded-lg bg-violet-100 text-xl text-violet-700">
+    <span
+      class="flex size-10 items-center justify-center rounded-lg bg-violet-100 text-xl text-violet-700"
+    >
       ✂
     </span>
     <div>
       <h2 class="text-xl font-bold text-slate-900">Service details</h2>
-      <p class="mt-1 text-sm text-slate-500">Update the service information and booking settings.</p>
+      <p class="mt-1 text-sm text-slate-500">
+        Update the service information and booking settings.
+      </p>
     </div>
   </div>
 
@@ -73,16 +77,20 @@
       </div>
 
       <div>
-        <label for="service-category" class="mb-2 block text-sm font-medium text-slate-800">
-          Category ID
-        </label>
-        <input
+       
+        <app-select
           id="service-category"
-          type="text"
-          formControlName="categoryId"
-          class="h-12 w-full rounded-lg border border-slate-300 px-3 text-base outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-          [class.border-red-500]="form.controls.categoryId.touched && form.controls.categoryId.invalid"
+          label="Category"
+          placeholder="Select a category"
+          containerClass="w-full"
+          [options]="categoryOptions()"
+          [value]="form.controls.categoryId.value"
+          (valueChange)="onCategoryChange($event)"
         />
+
+        @if (form.controls.categoryId.touched && form.controls.categoryId.hasError('required')) {
+          <p class="mt-1 text-sm text-red-600">Category is required.</p>
+        }
         @if (form.controls.categoryId.touched && form.controls.categoryId.hasError('required')) {
           <p class="mt-1 text-sm text-red-600">Category is required.</p>
         }
@@ -93,7 +101,10 @@
           Price
         </label>
         <div class="relative">
-          <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-500">£</span>
+          <span
+            class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-500"
+            >£</span
+          >
           <input
             id="service-price"
             type="text"
@@ -117,7 +128,9 @@
           inputmode="numeric"
           formControlName="durationMinutes"
           class="h-12 w-full rounded-lg border border-slate-300 px-3 text-base outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-          [class.border-red-500]="form.controls.durationMinutes.touched && form.controls.durationMinutes.invalid"
+          [class.border-red-500]="
+            form.controls.durationMinutes.touched && form.controls.durationMinutes.invalid
+          "
         />
         @if (form.controls.durationMinutes.touched && form.controls.durationMinutes.invalid) {
           <p class="mt-1 text-sm text-red-600">Duration must be at least 1 minute.</p>
@@ -141,7 +154,9 @@
     <label class="flex cursor-pointer items-center justify-between rounded-xl bg-slate-100 p-4">
       <span>
         <span class="block text-base font-medium text-slate-900">Active</span>
-        <span class="mt-1 block text-sm text-slate-500">Allow this service to be shown and booked.</span>
+        <span class="mt-1 block text-sm text-slate-500"
+          >Allow this service to be shown and booked.</span
+        >
       </span>
       <input type="checkbox" formControlName="status" class="size-5 accent-violet-600" />
     </label>
@@ -149,7 +164,9 @@
     <label class="flex cursor-pointer items-center justify-between rounded-xl bg-slate-100 p-4">
       <span>
         <span class="block text-base font-medium text-slate-900">Popular service</span>
-        <span class="mt-1 block text-sm text-slate-500">Feature this service in the public services list.</span>
+        <span class="mt-1 block text-sm text-slate-500"
+          >Feature this service in the public services list.</span
+        >
       </span>
       <input type="checkbox" formControlName="isPopular" class="size-5 accent-violet-600" />
     </label>

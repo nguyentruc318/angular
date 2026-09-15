@@ -1,10 +1,29 @@
 <section class="mx-auto w-full max-w-5xl p-6">
+  <a
+    routerLink="/services"
+    class="mb-3 inline-flex items-center gap-2 rounded-lg px-1 py-2 text-sm font-medium text-slate-600 transition hover:text-violet-700"
+  >
+    <svg
+      class="size-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+    Back to services
+  </a>
   <h1 class="text-3xl font-bold text-slate-900 mb-3">Create service</h1>
   <p class="my-3 text-slate-500">Add a new service for your salon.</p>
 
   <div class="mt-6">
     <app-form-service
       submitLabel="Create service"
+      [categoryOptions]="categoryFacade.categoryOptions()"
       [isSubmitting]="isSaving()"
       (submitted)="createService($event)"
     />

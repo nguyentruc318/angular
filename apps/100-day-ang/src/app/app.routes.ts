@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+﻿import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -62,6 +62,13 @@ export const routes: Routes = [
                 (m) => m.CreateCategory,
               ),
           },
+          {
+            path: ':categoryId/edit',
+            loadComponent: () =>
+              import('./features/categories/page/edit-category/edit-category').then(
+                (m) => m.EditCategory,
+              ),
+          },
         ],
       },
       {
@@ -80,3 +87,4 @@ export const routes: Routes = [
     ],
   },
 ];
+

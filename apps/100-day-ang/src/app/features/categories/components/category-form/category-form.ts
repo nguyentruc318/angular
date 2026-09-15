@@ -1,11 +1,20 @@
-﻿import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
+﻿import {
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ToggleComponent } from 'shared';
-import { CategoryFormValue } from '../../models/category.model';
+import { ToggleComponent, Modal } from 'shared';
+import { CategoryFormValue, CategoryServiceItem } from '../../models/category.model';
+import { ServicePicker } from '../service-picker/service-picker';
 
 @Component({
   selector: 'app-category-form',
-  imports: [ReactiveFormsModule, ToggleComponent],
+  imports: [ReactiveFormsModule, ToggleComponent, Modal, ServicePicker],
   templateUrl: './category-form.html',
 })
 export class CategoryForm {
@@ -15,7 +24,10 @@ export class CategoryForm {
   readonly initialValue = input<CategoryFormValue | null>(null);
   readonly isSubmitting = input(false);
   readonly submitLabel = input('Save category');
-
+  readonly services = input<CategoryServiceItem[]>([]);
+  readonly isServiceModalOpen = signal(false);
+  readonly selectedServiceIds = signal<string[]>([]);
+  readonly draftServiceIds = signal<string[]>([]);
   readonly submitted = output<CategoryFormValue>();
   readonly imagePreviewUrl = signal<string | null>(null);
   readonly form = this.formBuilder.nonNullable.group({
@@ -24,6 +36,7 @@ export class CategoryForm {
     imageUrl: [''],
     imageFile: this.formBuilder.control<File | null>(null),
     isActive: [true],
+    serviceIds: this.formBuilder.nonNullable.control<string[]>([]),
   });
 
   constructor() {
@@ -40,9 +53,37 @@ export class CategoryForm {
 
       if (initialValue) {
         this.form.patchValue(initialValue);
+        this.selectedServiceIds.set([...(initialValue.serviceIds ?? [])]);
         this.imagePreviewUrl.set(initialValue.imageUrl || null);
       }
     });
+  }
+  openServiceModal(): void {
+    this.draftServiceIds.set([...this.selectedServiceIds()]);
+    this.isServiceModalOpen.set(true);
+  }
+
+  closeServiceModal(): void {
+    this.isServiceModalOpen.set(false);
+  }
+
+  onServiceSelectionChange(ids: string[]): void {
+    this.draftServiceIds.set(ids);
+  }
+
+  confirmServices(): void {
+    const ids = [...this.draftServiceIds()];
+
+    this.selectedServiceIds.set(ids);
+    this.form.controls.serviceIds.setValue(ids);
+    this.closeServiceModal();
+  }
+
+  removeService(serviceId: string): void {
+    const ids = this.selectedServiceIds().filter((id) => id !== serviceId);
+
+    this.selectedServiceIds.set(ids);
+    this.form.controls.serviceIds.setValue(ids);
   }
 
   onImageChange(event: Event): void {
@@ -67,6 +108,12 @@ export class CategoryForm {
   }
 
   async onSubmit(): Promise<void> {
+    this.form.controls.serviceIds.setValue(this.selectedServiceIds());
+
+    if (this.selectedServiceIds().length === 0) {
+      this.form.controls.serviceIds.setErrors({ required: true });
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -90,3 +137,9 @@ export class CategoryForm {
     });
   }
 }
+
+
+
+
+
+

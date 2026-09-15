@@ -1,13 +1,40 @@
-import { Component, inject, signal } from '@angular/core';
+﻿import { Component, inject, signal } from '@angular/core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  lucideBriefcaseBusiness,
+  lucideCalendarDays,
+  lucideLayoutDashboard,
+  lucideTags,
+  lucideUserRound,
+  lucideUsers,
+  lucideLogOut,
+  lucidePanelLeftClose,
+  lucidePanelLeftOpen,
+} from '@ng-icons/lucide';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { MockAuthService } from '../../features/auth/services/mock-auth.service';
-import { toast } from 'ngx-sonner';
 import { finalize } from 'rxjs';
+import { toast } from 'ngx-sonner';
+
+import { MockAuthService } from '../../features/auth/services/mock-auth.service';
 import { AuthStore } from '../../features/auth/store/auth.store';
+import { SIDEBAR_NAV_GROUPS } from '../constants/sidebar-navigation';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, NgIcon],
+  providers: [
+    provideIcons({
+      lucideBriefcaseBusiness,
+      lucideCalendarDays,
+      lucideLayoutDashboard,
+      lucideTags,
+      lucideUserRound,
+      lucideUsers,
+      lucideLogOut,
+      lucidePanelLeftClose,
+      lucidePanelLeftOpen,
+    }),
+  ],
   templateUrl: './sidebar.html',
 })
 export class Sidebar {
@@ -15,7 +42,9 @@ export class Sidebar {
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
 
+  readonly navigationGroups = SIDEBAR_NAV_GROUPS;
   readonly isSigningOut = signal(false);
+  readonly isCollapsed = signal(false);
   signOut(): void {
     if (this.isSigningOut()) return;
 
@@ -34,5 +63,8 @@ export class Sidebar {
           toast.error('Unable to sign out. Please try again.');
         },
       });
+  }
+  toggleSidebar(): void {
+    this.isCollapsed.update((collapsed) => !collapsed);
   }
 }

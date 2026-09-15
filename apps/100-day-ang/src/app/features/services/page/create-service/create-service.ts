@@ -1,21 +1,24 @@
-import { Component, inject, signal } from '@angular/core';
-import { FormService } from '../../components/form-service';
-import { finalize } from 'rxjs';
-import { CreateServicePayload, ServiceFormValue } from '../../models/services.model';
+﻿import { Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { toast } from 'ngx-sonner';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { ServicesService } from '../../services/services.service';
 
+import { FormService } from '../../components/form-service';
+import type { CreateServicePayload, ServiceFormValue } from '../../models/services.model';
+import { ServiceFacade } from '../../service.facade';
+import { CategoryFacade } from '../../../categories/category.facade';
 @Component({
   selector: 'create-form-service',
   templateUrl: './create-service.html',
-  imports: [FormService],
+  imports: [FormService, RouterLink],
+  providers: [ServiceFacade, CategoryFacade],
 })
 export class CreateService {
-  readonly isSaving = signal(false);
-  readonly router = inject(Router);
-  private readonly servicesService = inject(ServicesService);
+  readonly facade = inject(ServiceFacade);
+  readonly categoryFacade = inject(CategoryFacade);
+  readonly isSaving = this.facade.isSaving;
+  ngOnInit(): void {
+    this.categoryFacade.loadCategories();
+  }
   createService(formValue: ServiceFormValue): void {
     const price = Number(formValue.price);
 
@@ -40,19 +43,6 @@ export class CreateService {
       file: formValue.imageFile,
     };
 
-    this.isSaving.set(true);
-
-    this.servicesService
-      .create(payload)
-      .pipe(finalize(() => this.isSaving.set(false)))
-      .subscribe({
-        next: () => {
-          toast.success('Service created');
-          void this.router.navigateByUrl('/services');
-        },
-        error: (error: HttpErrorResponse) => {
-          toast.error(error.error?.error?.message ?? 'Unable to create service. Please try again.');
-        },
-      });
+    this.facade.create(payload);
   }
 }

@@ -24,6 +24,10 @@
       </svg>
       Back to services
     </a>
-    <app-form-service [service]="service" (submitted)="updateService($event)" />
+    <app-form-service
+      [service]="service"
+      (submitted)="updateService($event)"
+      [categoryOptions]="categoryFacade.categoryOptions()"
+    />
   }
 </section>

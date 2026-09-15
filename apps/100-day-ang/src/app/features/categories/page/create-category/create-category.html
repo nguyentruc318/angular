@@ -1,5 +1,11 @@
 ﻿<section class="w-full p-4 sm:p-6 lg:p-8">
   <div class="mx-auto w-full max-w-screen-2xl">
+    <a
+      routerLink="/categories"
+      class="mb-3 inline-flex items-center gap-2 rounded-lg px-1 py-2 text-sm font-medium text-slate-600 transition hover:text-violet-700"
+    >
+      ← Back to categories
+    </a>
     <h1 class="text-3xl font-bold text-slate-900">Create category</h1>
     <p class="my-3 text-slate-500">Add a category to organize your services.</p>
 
@@ -7,6 +13,7 @@
       submitLabel="Create category"
       [isSubmitting]="facade.isSaving()"
       (submitted)="facade.create($event)"
+      [services]="services()"
     />
   </div>
 </section>

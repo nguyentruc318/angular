@@ -1,31 +1,31 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { FormService } from '../../components/form-service';
-
-import {
-  ManagementService,
-  ServiceFormValue,
-  UpdateServicePayload,
-} from '../../models/services.model';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ServicesService } from '../../services/services.service';
+﻿import { Component, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { finalize } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { DestroyRef } from '@angular/core';
 import { toast } from 'ngx-sonner';
+
+import { FormService } from '../../components/form-service';
+import type { ServiceFormValue, UpdateServicePayload } from '../../models/services.model';
+import { ServiceFacade } from '../../service.facade';
+import { CategoryFacade } from '../../../categories/category.facade';
+
 @Component({
   selector: 'app-edit-service',
   templateUrl: './edit-service.html',
   imports: [FormService, RouterLink],
+  providers: [ServiceFacade, CategoryFacade],
 })
 export class EditService {
-  readonly service = signal<ManagementService | null>(null);
-  readonly isLoading = signal(true);
-  readonly errorMessage = signal<string | null>(null);
+  readonly facade = inject(ServiceFacade);
+  readonly categoryFacade = inject(CategoryFacade);
+
+  readonly service = this.facade.service;
+  readonly isLoading = this.facade.isLoading;
+  readonly errorMessage = this.facade.errorMessage;
+  readonly isSaving = this.facade.isSaving;
   private readonly route = inject(ActivatedRoute);
-  private readonly servicesService = inject(ServicesService);
   private readonly destroyRef = inject(DestroyRef);
-  readonly isSaving = signal(false);
-  private readonly router = inject(Router);
+
   ngOnInit(): void {
     this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
       const serviceId = params.get('serviceId');
@@ -36,27 +36,11 @@ export class EditService {
         return;
       }
 
-      this.loadService(serviceId);
+      this.facade.load(serviceId);
+      this.categoryFacade.loadCategories();
     });
   }
-  private loadService(serviceId: string): void {
-    this.isLoading.set(true);
-    this.errorMessage.set(null);
 
-    this.servicesService
-      .detail(serviceId)
-      .pipe(finalize(() => this.isLoading.set(false)))
-      .subscribe({
-        next: (response) => {
-          this.service.set(response.data);
-        },
-        error: (error: HttpErrorResponse) => {
-          this.errorMessage.set(
-            error.error?.error?.message ?? 'Unable to load this service. Please try again.',
-          );
-        },
-      });
-  }
   updateService(formValue: ServiceFormValue): void {
     const service = this.service();
 
@@ -82,19 +66,6 @@ export class EditService {
       file: formValue.imageFile ?? undefined,
     };
 
-    this.isSaving.set(true);
-
-    this.servicesService
-      .update(service.id, payload)
-      .pipe(finalize(() => this.isSaving.set(false)))
-      .subscribe({
-        next: () => {
-          toast.success('Service updated');
-          void this.router.navigateByUrl('/services');
-        },
-        error: (error: HttpErrorResponse) => {
-          toast.error(error.error?.error?.message ?? 'Unable to update service. Please try again.');
-        },
-      });
+    this.facade.update(service.id, payload);
   }
 }

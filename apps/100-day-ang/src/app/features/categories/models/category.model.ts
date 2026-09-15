@@ -22,7 +22,7 @@ export type UpdateCategoryResponse = Category;
 export interface CategoryServiceItem {
   id: string;
   name: string;
-  categoryId: string;
+  categoryId: string | null;
   priceMinor: number;
   currency: string;
   durationMinutes: number;
@@ -74,4 +74,6 @@ export interface CategoryFormValue {
   imageUrl: string;
   imageFile: File | null;
   isActive: boolean;
+  serviceIds: string[];
 }
+

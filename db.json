@@ -1,4 +1,4 @@
-{
+﻿{
   "customers": [
     {
       "id": "customer-001",
@@ -102,58 +102,32 @@
       "imageAltText": "Gel manicure",
       "status": true,
       "sortOrder": 1,
-      "branchServices": [
-        {
-          "id": "branch-service-001",
-          "status": "active",
-          "branchId": "branch-main",
-          "currency": "USD",
-          "priceMinor": 4200,
-          "depositMinor": 1000,
-          "maxAdvanceDays": 60,
-          "minLeadMinutes": 60,
-          "durationMinutes": 60,
-          "bufferAfterMinutes": 10,
-          "bufferBeforeMinutes": 5,
-          "onlineBookingEnabled": true,
-          "bookingDurationMinutes": 60
-        }
-      ]
+      "priceMinor": 4200,
+      "currency": "USD",
+      "durationMinutes": 60,
+      "isActive": true
     },
     {
       "id": "service-002",
       "name": "Classic Pedicure",
       "slug": "classic-pedicure",
-      "shortDescription": "Relaxing pedicure with shaping and polish.",
+      "shortDescription": "A classic pedicure treatment for clean, polished nails.",
       "description": "A classic pedicure treatment for clean, polished nails.",
       "isAddon": false,
-      "isPopular": true,
+      "isPopular": false,
       "requiresConsent": false,
-      "categoryId": "category-pedicure",
+      "categoryId": "fhfMrQb3Yz4",
       "categoryName": "Pedicure",
       "categorySlug": "pedicure",
       "imageUrl": "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
       "imageAssetId": null,
-      "imageAltText": "Classic pedicure",
+      "imageAltText": "Classic Pedicure",
       "status": true,
-      "sortOrder": 2,
-      "branchServices": [
-        {
-          "id": "branch-service-002",
-          "status": "active",
-          "branchId": "branch-main",
-          "currency": "USD",
-          "priceMinor": 3500,
-          "depositMinor": 800,
-          "maxAdvanceDays": 60,
-          "minLeadMinutes": 60,
-          "durationMinutes": 45,
-          "bufferAfterMinutes": 10,
-          "bufferBeforeMinutes": 5,
-          "onlineBookingEnabled": true,
-          "bookingDurationMinutes": 45
-        }
-      ]
+      "sortOrder": 0,
+      "priceMinor": 3500,
+      "currency": "USD",
+      "durationMinutes": 45,
+      "isActive": true
     }
   ],
   "staff": [
@@ -177,7 +151,7 @@
       "id": "category-manicure",
       "name": "Manicure",
       "slug": "manicure",
-      "description": "Dịch vụ chăm sóc và làm đẹp móng tay.",
+      "description": "Dá»‹ch vá»¥ chÄƒm sÃ³c vÃ  lÃ m Ä‘áº¹p mÃ³ng tay.",
       "imageUrl": "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
       "isActive": true
     },
@@ -185,7 +159,7 @@
       "id": "category-pedicure",
       "name": "Pedicure",
       "slug": "pedicure",
-      "description": "Dịch vụ chăm sóc và làm đẹp móng chân.",
+      "description": "Dá»‹ch vá»¥ chÄƒm sÃ³c vÃ  lÃ m Ä‘áº¹p mÃ³ng chÃ¢n.",
       "imageUrl": "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
       "isActive": true
     },
@@ -193,18 +167,92 @@
       "id": "category-nail-art",
       "name": "Nail Art",
       "slug": "nail-art",
-      "description": "Dịch vụ tạo hình móng tay.",
+      "description": "Dá»‹ch vá»¥ táº¡o hÃ¬nh mÃ³ng tay.",
       "imageUrl": "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
       "isActive": true
     },
     {
-      "name": "Cate 1",
-      "description": "this is description",
+      "name": "cate 2",
+      "description": "desc",
       "imageUrl": null,
       "isActive": true,
-      "id": "WKkK8l0cWbs"
+      "id": "fhfMrQb3Yz4"
     }
   ],
+  "dashboard": {
+    "id": "dashboard-001",
+    "currency": "GBP",
+    "period": "2026-09",
+    "summary": {
+      "todayRevenueMinor": 7700,
+      "monthlyRevenueMinor": 48600,
+      "todayBookings": 2,
+      "upcomingBookings": 4,
+      "activeServices": 2,
+      "activeCategories": 3
+    },
+    "revenueTrend": [
+      { "date": "2026-09-01", "revenueMinor": 7700, "bookingCount": 2 },
+      { "date": "2026-09-02", "revenueMinor": 7000, "bookingCount": 2 },
+      { "date": "2026-09-03", "revenueMinor": 4800, "bookingCount": 1 },
+      { "date": "2026-09-04", "revenueMinor": 6700, "bookingCount": 2 },
+      { "date": "2026-09-05", "revenueMinor": 3500, "bookingCount": 1 },
+      { "date": "2026-09-06", "revenueMinor": 2800, "bookingCount": 1 },
+      { "date": "2026-09-07", "revenueMinor": 4200, "bookingCount": 1 },
+      { "date": "2026-09-08", "revenueMinor": 4800, "bookingCount": 1 },
+      { "date": "2026-09-09", "revenueMinor": 3500, "bookingCount": 1 },
+      { "date": "2026-09-10", "revenueMinor": 4200, "bookingCount": 1 },
+      { "date": "2026-09-11", "revenueMinor": 2800, "bookingCount": 1 },
+      { "date": "2026-09-12", "revenueMinor": 2500, "bookingCount": 1 },
+      { "date": "2026-09-13", "revenueMinor": 4800, "bookingCount": 1 },
+      { "date": "2026-09-14", "revenueMinor": 7700, "bookingCount": 2 }
+    ],
+    "bookingStatus": [
+      { "status": "pending_confirmation", "label": "Pending", "count": 1 },
+      { "status": "confirmed", "label": "Confirmed", "count": 2 },
+      { "status": "checked_out", "label": "Completed", "count": 14 }
+    ],
+    "popularServices": [
+      {
+        "serviceId": "service-001",
+        "name": "Gel Manicure",
+        "bookingCount": 8,
+        "revenueMinor": 33600
+      },
+      {
+        "serviceId": "service-002",
+        "name": "Classic Pedicure",
+        "bookingCount": 5,
+        "revenueMinor": 17500
+      }
+    ],
+    "upcomingBookings": [
+      {
+        "id": "booking-001",
+        "bookingReference": "ATN-1001",
+        "serviceName": "Gel Manicure",
+        "customerName": "Emma Johnson",
+        "startsAt": "2026-09-15T10:00:00.000Z",
+        "status": "confirmed"
+      },
+      {
+        "id": "booking-002",
+        "bookingReference": "ATN-1002",
+        "serviceName": "Classic Pedicure",
+        "customerName": "Sophia Williams",
+        "startsAt": "2026-09-15T13:30:00.000Z",
+        "status": "confirmed"
+      },
+      {
+        "id": "booking-003",
+        "bookingReference": "ATN-1003",
+        "serviceName": "Gel Manicure",
+        "customerName": "Olivia Brown",
+        "startsAt": "2026-09-16T09:30:00.000Z",
+        "status": "pending_confirmation"
+      }
+    ]
+  },
   "users": [
     {
       "id": "user-admin",

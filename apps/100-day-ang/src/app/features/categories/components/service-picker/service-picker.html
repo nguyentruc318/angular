@@ -1,0 +1,41 @@
+﻿<div class="space-y-4">
+  <input
+    type="search"
+    placeholder="Search services..."
+    class="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-violet-500"
+    [value]="searchTerm()"
+    (input)="onSearch($event)"
+  />
+
+  <p class="text-sm text-slate-500">{{ selectedCount() }} service selected</p>
+
+  <div class="max-h-80 space-y-2 overflow-y-auto">
+    @for (service of filteredServices(); track service.id) {
+      <label
+        class="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 p-4 hover:bg-violet-50"
+      >
+        <div class="flex items-center gap-3">
+          <input
+            type="checkbox"
+            class="size-4 accent-violet-600"
+            [checked]="isSelected(service.id)"
+            (change)="toggle(service.id)"
+          />
+
+          <div>
+            <p class="font-medium text-slate-900">
+              {{ service.name }}
+            </p>
+
+            <p class="text-sm text-slate-500">{{ service.durationMinutes }} minutes</p>
+          </div>
+        </div>
+
+        <span class="text-sm text-slate-500"> {{ service.priceMinor / 100 | currency: 'GBP': 'symbol': '1.2-2' }} </span>
+      </label>
+    } @empty {
+      <p class="py-8 text-center text-sm text-slate-500">No services found.</p>
+    }
+  </div>
+</div>
+

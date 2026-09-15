@@ -1,0 +1,29 @@
+﻿<section class="w-full p-4 sm:p-6 lg:p-8">
+  <div class="mx-auto w-full max-w-screen-2xl">
+    @if (isLoading()) {
+      <div class="rounded-xl bg-white p-6 shadow">Loading category...</div>
+    } @else if (errorMessage(); as message) {
+      <div class="rounded-xl bg-white p-6 text-red-600 shadow">
+        {{ message }}
+      </div>
+    } @else if (category()) {
+      <a
+        routerLink="/categories"
+        class="mb-3 inline-flex items-center gap-2 rounded-lg px-1 py-2 text-sm font-medium text-slate-600 transition hover:text-violet-700"
+      >
+        ← Back to categories
+      </a>
+
+      <h1 class="text-3xl font-bold text-slate-900">Edit category</h1>
+      <p class="my-3 text-slate-500">Update the category and its services.</p>
+
+      <app-category-form
+        submitLabel="Save changes"
+        [initialValue]="initialValue()"
+        [services]="services()"
+        [isSubmitting]="isSaving()"
+        (submitted)="updateCategory($event)"
+      />
+    }
+  </div>
+</section>

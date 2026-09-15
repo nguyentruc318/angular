@@ -1,15 +1,26 @@
-import { Component, computed, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
+﻿import {
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import type { ManagementService, ServiceFormValue } from '../models/services.model';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SelectComponent, SelectOption } from '../../../shared/components/select/select';
 @Component({
   selector: 'app-form-service',
   templateUrl: './form-service.html',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SelectComponent],
 })
 export class FormService {
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   readonly service = input<ManagementService | null>(null);
+  readonly categoryOptions = input<readonly SelectOption[]>([]);
   readonly initialValue = computed<ServiceFormValue | null>(() => {
     const service = this.service();
 
@@ -17,13 +28,11 @@ export class FormService {
       return null;
     }
 
-    const branchService = service.branchServices[0];
-
     return {
       name: service.name,
-      categoryId: service.categoryId,
-      price: String((branchService?.priceMinor ?? 0) / 100),
-      durationMinutes: branchService?.durationMinutes ?? 0,
+      categoryId: service.categoryId ?? '',
+      price: String((service.priceMinor ?? 0) / 100),
+      durationMinutes: service.durationMinutes ?? 0,
       description: service.description ?? '',
       status: service.status,
       isPopular: service.isPopular,
@@ -77,7 +86,11 @@ export class FormService {
     this.form.controls.imageFile.markAsDirty();
     this.imagePreviewUrl.set(file ? URL.createObjectURL(file) : null);
   }
-
+  onCategoryChange(categoryId: string): void {
+    this.form.controls.categoryId.setValue(categoryId);
+    this.form.controls.categoryId.markAsTouched();
+    this.form.controls.categoryId.markAsDirty();
+  }
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

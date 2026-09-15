@@ -6,6 +6,8 @@ import {
   debounceTime,
   distinctUntilChanged,
   EMPTY,
+  forkJoin,
+  of,
   finalize,
   map,
   Subject,
@@ -24,6 +26,7 @@ import { CategoryService } from './services/category.service';
 import { QueryParamsService } from '../../core/services/query-params.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SelectOption } from '../../shared/components/select/select';
 
 @Injectable()
 export class CategoryFacade {
@@ -38,6 +41,7 @@ export class CategoryFacade {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  readonly categoryOptions = signal<SelectOption[]>([]);
   readonly isSaving = signal(false);
   readonly listParams = signal<CategoryListParams>({
     page: 1,
@@ -137,7 +141,18 @@ export class CategoryFacade {
 
     this.categoryService
       .create(payload)
-      .pipe(finalize(() => this.isSaving.set(false)))
+      .pipe(
+        switchMap((category) => {
+          const serviceUpdates = formValue.serviceIds.map((serviceId) =>
+            this.categoryService.updateServiceCategory(serviceId, category.id),
+          );
+
+          return serviceUpdates.length
+            ? forkJoin(serviceUpdates).pipe(map(() => category))
+            : of(category);
+        }),
+        finalize(() => this.isSaving.set(false)),
+      )
       .subscribe({
         next: () => {
           toast.success('Category created');
@@ -145,6 +160,52 @@ export class CategoryFacade {
         },
         error: (error: HttpErrorResponse) => {
           toast.error(error.error?.message ?? 'Unable to create category. Please try again.');
+        },
+      });
+  }
+  removeCategory(category: CategoryWithServices): void {
+    const detachRequests = category.services.map((service) =>
+      this.categoryService.updateServiceCategory(service.id, null),
+    );
+
+    const detachServices$ = detachRequests.length ? forkJoin(detachRequests) : of([]);
+
+    this.isSaving.set(true);
+
+    detachServices$
+      .pipe(
+        switchMap(() => this.categoryService.remove(category.id)),
+        finalize(() => this.isSaving.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.categories.update((categories) =>
+            categories.filter((item) => item.id !== category.id),
+          );
+
+          toast.success('Category deleted');
+        },
+        error: (error: HttpErrorResponse) => {
+          toast.error(error.error?.message ?? 'Unable to delete category.');
+        },
+      });
+  }
+  loadCategories(): void {
+    this.categoryService
+      .listAll()
+      .pipe(
+        map((categories) =>
+          categories
+            .filter((category) => category.isActive)
+            .map((category) => ({
+              value: category.id,
+              label: category.name,
+            })),
+        ),
+      )
+      .subscribe({
+        next: (options) => {
+          this.categoryOptions.set(options);
         },
       });
   }

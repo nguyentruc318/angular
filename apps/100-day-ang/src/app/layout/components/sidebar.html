@@ -1,84 +1,93 @@
-<aside class="flex h-screen w-64 flex-col border-r border-slate-200 bg-white">
-  <!-- Brand -->
-  <div class="flex h-16 items-center border-b border-slate-200 px-6">
-    <span class="text-lg font-bold text-violet-600">Admin Panel</span>
+﻿<aside
+  class="flex h-screen flex-col border-r border-slate-200 bg-white transition-all duration-300"
+  [class.w-64]="!isCollapsed()"
+  [class.w-20]="isCollapsed()"
+>
+  <div
+    class="flex h-16 items-center border-b border-slate-200"
+    [class.justify-between]="!isCollapsed()"
+    [class.justify-center]="isCollapsed()"
+    [class.px-6]="!isCollapsed()"
+  >
+    @if (!isCollapsed()) {
+      <span class="text-lg font-bold text-violet-600">Admin Panel</span>
+    }
+
+    <button
+      type="button"
+      class="rounded-lg p-2 text-slate-500 hover:bg-slate-100"
+      [attr.aria-label]="isCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+      [title]="isCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+      (click)="toggleSidebar()"
+    >
+      <ng-icon
+        [name]="isCollapsed() ? 'lucidePanelLeftOpen' : 'lucidePanelLeftClose'"
+        class="size-5"
+        aria-hidden="true"
+      />
+    </button>
   </div>
 
-  <!-- Navigation -->
   <nav class="flex-1 space-y-6 overflow-y-auto p-4">
-    <div>
-      <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-        Overview
-      </p>
+    @for (group of navigationGroups; track group.label) {
+      <div>
+        @if (!isCollapsed()) {
+          <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+            {{ group.label }}
+          </p>
+        }
 
-      <a
-        routerLink="/dashboard"
-        routerLinkActive="bg-violet-50 text-violet-700"
-        class="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
-      >
-        Dashboard
-      </a>
-    </div>
+        <div class="space-y-1">
+          @for (item of group.items; track item.route) {
+            <a
+              [routerLink]="item.route"
+              routerLinkActive="bg-violet-50 text-violet-700"
+              class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
+              [class.justify-center]="isCollapsed()"
+              [attr.title]="isCollapsed() ? item.label : null"
+            >
+              <ng-icon [name]="item.icon" class="size-4 shrink-0" aria-hidden="true" />
 
-    <div>
-      <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-        Management
-      </p>
-
-      <a
-        routerLink="/bookings"
-        routerLinkActive="bg-violet-50 text-violet-700"
-        class="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
-      >
-        Bookings
-      </a>
-
-      <a
-        routerLink="/customers"
-        routerLinkActive="bg-violet-50 text-violet-700"
-        class="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
-      >
-        Customers
-      </a>
-
-      <a
-        routerLink="/services"
-        routerLinkActive="bg-violet-50 text-violet-700"
-        class="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
-      >
-        Services
-      </a>
-      <a
-        routerLink="/categories"
-        routerLinkActive="bg-violet-50 text-violet-700"
-        class="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
-      >
-        Categories
-      </a>
-      <a
-        routerLink="/staff"
-        routerLinkActive="bg-violet-50 text-violet-700"
-        class="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
-      >
-        Staff
-      </a>
-    </div>
+              @if (!isCollapsed()) {
+                <span>{{ item.label }}</span>
+              }
+            </a>
+          }
+        </div>
+      </div>
+    }
   </nav>
 
   <div class="border-t border-slate-200 p-4">
-    <p class="text-sm font-medium text-slate-800">Admin</p>
-    <p class="mt-1 text-xs text-slate-500">admin@americantopnail.com</p>
+    @if (!isCollapsed()) {
+      <p class="text-sm font-medium text-slate-800">Admin</p>
+      <p class="mt-1 text-xs text-slate-500">admin@americantopnail.com</p>
+    }
 
-    <button
-      (click)="signOut()"
-      [disabled]="isSigningOut()"
-      class="mt-3 text-sm font-medium text-red-600 hover:text-red-700"
-    >
-      @if (isSigningOut()) {
-        Signing out...
-      } @else {
-        Sign out
-      }
-    </button>
+    @if (!isCollapsed()) {
+      <button
+        type="button"
+        (click)="signOut()"
+        [disabled]="isSigningOut()"
+        class="mt-3 min-h-12 min-w-24 cursor-pointer rounded-lg bg-amber-100 px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        @if (isSigningOut()) {
+          Signing out...
+        } @else {
+          Sign out
+        }
+      </button>
+    } @else {
+      <button
+        type="button"
+        (click)="signOut()"
+        [disabled]="isSigningOut()"
+        aria-label="Sign out"
+        title="Sign out"
+        class="mx-auto mt-3 flex size-10 cursor-pointer items-center justify-center rounded-lg bg-amber-100 text-red-600 transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <ng-icon name="lucideLogOut" class="size-5" aria-hidden="true" />
+      </button>
+    }
   </div>
 </aside>

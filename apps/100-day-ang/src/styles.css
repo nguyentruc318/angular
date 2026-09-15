@@ -12,3 +12,6 @@ app-root {
   display: block;
   height: 100%;
 }
+
+@source "../../../libs/shared/src";
+@import '@angular/material/prebuilt-themes/indigo-pink.css';

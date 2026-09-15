@@ -1,3 +1,29 @@
-<section class="p-6">
+<section class="space-y-6 p-6">
   <h1 class="text-2xl font-bold text-slate-900">Dashboard</h1>
+
+  <div class="rounded-2xl bg-white p-6 shadow">
+    <h2 class="mb-4 text-lg font-semibold text-slate-900">Revenue trend</h2>
+
+    <lib-shared-tabs
+      [tabs]="rangeTabs"
+      [value]="facade.selectedRange().toString()"
+      (valueChange)="facade.selectRange($event)"
+    />
+
+    @if (facade.selectedRange() === 'custom') {
+      <lib-shared-date-range-picker (rangeChange)="facade.setDateRange($event.start, $event.end)" />
+    }
+
+    <revenue-line-chart [points]="facade.visibleRevenue()" />
+  </div>
+  <div class="rounded-2xl bg-white p-6 shadow">
+    <h2 class="mb-4 text-lg font-semibold text-slate-900">Booking status</h2>
+
+    <booking-status-donut [data]="facade.bookingStatus()" />
+  </div>
+  <div class="rounded-2xl bg-white p-6 shadow">
+    <h2 class="mb-4 text-lg font-semibold text-slate-900">Popular services</h2>
+
+    <popular-services-bar-chart [data]="facade.popularServices()" />
+  </div>
 </section>
