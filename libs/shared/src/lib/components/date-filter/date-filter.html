@@ -1,0 +1,57 @@
+<div class="relative inline-block">
+  <button
+    #filterButton
+    type="button"
+    class="flex items-center gap-2 rounded-lg border px-4 py-2 border-none bg-white"
+    (click)="toggleMenu()"
+  >
+    <span>
+      {{ getLabel() }}
+    </span>
+
+    <ng-icon name="lucideChevronDown" class="size-4" aria-hidden="true" />
+  </button>
+
+  @if (isMenuOpen()) {
+    <div class="absolute left-0 top-full z-20 mt-2 w-60 rounded-lg bg-white p-1 shadow-lg">
+      <button
+        type="button"
+        class="block w-full rounded px-3 py-2 text-left hover:bg-gray-100"
+        (click)="selectToday()"
+      >
+        Today
+      </button>
+
+      <button
+        type="button"
+        class="block w-full rounded px-3 py-2 text-left hover:bg-gray-100"
+        (click)="selectRange(); picker.open()"
+      >
+        Date range
+      </button>
+    </div>
+  }
+
+  <!-- Keep the input mounted as the calendar anchor without displaying a form field. -->
+  <mat-date-range-input
+    class="pointer-events-none absolute inset-0 opacity-0"
+    aria-hidden="true"
+    [rangePicker]="picker"
+  >
+    <input
+      matStartDate
+      tabindex="-1"
+      [ngModel]="startDate()"
+      (ngModelChange)="onStartDateChange($event)"
+    />
+
+    <input
+      matEndDate
+      tabindex="-1"
+      [ngModel]="endDate()"
+      (ngModelChange)="onEndDateChange($event)"
+    />
+  </mat-date-range-input>
+
+  <mat-date-range-picker #picker [restoreFocus]="false" (closed)="filterButton.focus()" />
+</div>

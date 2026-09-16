@@ -1,4 +1,4 @@
-﻿{
+{
   "customers": [
     {
       "id": "customer-001",
@@ -81,6 +81,123 @@
         "id": "customer-003",
         "fullName": "Olivia Brown",
         "phoneE164": "+14155550103"
+      }
+    },
+    {
+      "id": "booking-004",
+      "bookingReference": "ATN-1004",
+      "type": "gel-manicure",
+      "status": "confirmed",
+      "startsAt": "2026-09-15T09:00:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-004",
+        "fullName": "Ava Smith",
+        "phoneE164": "+14155550104"
+      }
+    },
+    {
+      "id": "booking-005",
+      "bookingReference": "ATN-1005",
+      "type": "pedicure",
+      "status": "pending_confirmation",
+      "startsAt": "2026-09-15T11:30:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-005",
+        "fullName": "Mia Davis",
+        "phoneE164": "+14155550105"
+      }
+    },
+    {
+      "id": "booking-006",
+      "bookingReference": "ATN-1006",
+      "type": "nail-art",
+      "status": "confirmed",
+      "startsAt": "2026-09-15T14:00:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-006",
+        "fullName": "Isabella Wilson",
+        "phoneE164": "+14155550106"
+      }
+    },
+    {
+      "id": "booking-007",
+      "bookingReference": "ATN-1007",
+      "type": "gel-manicure",
+      "status": "checked_out",
+      "startsAt": "2026-09-16T10:00:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-007",
+        "fullName": "Charlotte Moore",
+        "phoneE164": "+14155550107"
+      }
+    },
+    {
+      "id": "booking-008",
+      "bookingReference": "ATN-1008",
+      "type": "pedicure",
+      "status": "confirmed",
+      "startsAt": "2026-09-16T13:00:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-008",
+        "fullName": "Amelia Taylor",
+        "phoneE164": "+14155550108"
+      }
+    },
+    {
+      "id": "booking-009",
+      "bookingReference": "ATN-1009",
+      "type": "gel-manicure",
+      "status": "pending_confirmation",
+      "startsAt": "2026-09-17T09:30:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-009",
+        "fullName": "Harper Anderson",
+        "phoneE164": "+14155550109"
+      }
+    },
+    {
+      "id": "booking-010",
+      "bookingReference": "ATN-1010",
+      "type": "nail-art",
+      "status": "confirmed",
+      "startsAt": "2026-09-17T15:00:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-010",
+        "fullName": "Evelyn Thomas",
+        "phoneE164": "+14155550110"
+      }
+    },
+    {
+      "id": "booking-011",
+      "bookingReference": "ATN-1011",
+      "type": "pedicure",
+      "status": "checked_out",
+      "startsAt": "2026-09-18T12:00:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-011",
+        "fullName": "Luna Jackson",
+        "phoneE164": "+14155550111"
+      }
+    },
+    {
+      "id": "booking-012",
+      "bookingReference": "ATN-1012",
+      "type": "gel-manicure",
+      "status": "confirmed",
+      "startsAt": "2026-09-19T10:30:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "customer-012",
+        "fullName": "Ella White",
+        "phoneE164": "+14155550112"
       }
     }
   ],
@@ -192,25 +309,93 @@
       "activeCategories": 3
     },
     "revenueTrend": [
-      { "date": "2026-09-01", "revenueMinor": 7700, "bookingCount": 2 },
-      { "date": "2026-09-02", "revenueMinor": 7000, "bookingCount": 2 },
-      { "date": "2026-09-03", "revenueMinor": 4800, "bookingCount": 1 },
-      { "date": "2026-09-04", "revenueMinor": 6700, "bookingCount": 2 },
-      { "date": "2026-09-05", "revenueMinor": 3500, "bookingCount": 1 },
-      { "date": "2026-09-06", "revenueMinor": 2800, "bookingCount": 1 },
-      { "date": "2026-09-07", "revenueMinor": 4200, "bookingCount": 1 },
-      { "date": "2026-09-08", "revenueMinor": 4800, "bookingCount": 1 },
-      { "date": "2026-09-09", "revenueMinor": 3500, "bookingCount": 1 },
-      { "date": "2026-09-10", "revenueMinor": 4200, "bookingCount": 1 },
-      { "date": "2026-09-11", "revenueMinor": 2800, "bookingCount": 1 },
-      { "date": "2026-09-12", "revenueMinor": 2500, "bookingCount": 1 },
-      { "date": "2026-09-13", "revenueMinor": 4800, "bookingCount": 1 },
-      { "date": "2026-09-14", "revenueMinor": 7700, "bookingCount": 2 }
+      {
+        "date": "2026-09-01",
+        "revenueMinor": 7700,
+        "bookingCount": 2
+      },
+      {
+        "date": "2026-09-02",
+        "revenueMinor": 7000,
+        "bookingCount": 2
+      },
+      {
+        "date": "2026-09-03",
+        "revenueMinor": 4800,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-04",
+        "revenueMinor": 6700,
+        "bookingCount": 2
+      },
+      {
+        "date": "2026-09-05",
+        "revenueMinor": 3500,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-06",
+        "revenueMinor": 2800,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-07",
+        "revenueMinor": 4200,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-08",
+        "revenueMinor": 4800,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-09",
+        "revenueMinor": 3500,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-10",
+        "revenueMinor": 4200,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-11",
+        "revenueMinor": 2800,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-12",
+        "revenueMinor": 2500,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-13",
+        "revenueMinor": 4800,
+        "bookingCount": 1
+      },
+      {
+        "date": "2026-09-14",
+        "revenueMinor": 7700,
+        "bookingCount": 2
+      }
     ],
     "bookingStatus": [
-      { "status": "pending_confirmation", "label": "Pending", "count": 1 },
-      { "status": "confirmed", "label": "Confirmed", "count": 2 },
-      { "status": "checked_out", "label": "Completed", "count": 14 }
+      {
+        "status": "pending_confirmation",
+        "label": "Pending",
+        "count": 1
+      },
+      {
+        "status": "confirmed",
+        "label": "Confirmed",
+        "count": 2
+      },
+      {
+        "status": "checked_out",
+        "label": "Completed",
+        "count": 14
+      }
     ],
     "popularServices": [
       {

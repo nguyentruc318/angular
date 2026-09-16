@@ -5,7 +5,7 @@
       <p class="mt-1 text-slate-500">View and manage upcoming salon appointments.</p>
     </div>
 
-    @if (pagination(); as pageInfo) {
+    @if (facade.pagination(); as pageInfo) {
       <span class="rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
         {{ pageInfo.total }} total bookings
       </span>
@@ -17,35 +17,41 @@
       id="booking-search"
       label="Search bookings"
       placeholder="Reference, customer, phone..."
-      [value]="search()"
-      (valueChange)="onSearchChange($event)"
-    />
-    <app-select
-      id="booking-status"
-      label="Status"
-      placeholder="All statuses"
-      [options]="statusOptions"
-      [value]="status() ?? ''"
-      (valueChange)="onStatusChange($event)"
+      [value]="facade.search()"
+      (valueChange)="facade.updateSearch($event)"
     />
   </div>
-  @if (isLoading()) {
-    <div class="rounded-xl bg-white p-6 shadow">Loading bookings...</div>
-  } @else if (errorMessage(); as message) {
+  <div class="flex flex-wrap items-center gap-4">
+    <lib-shared-tabs
+      [tabs]="facade.statusTabs"
+      [value]="facade.status() ?? ''"
+      (valueChange)="facade.updateStatusFilter($event)"
+      tabClass="bg-white border-b border-slate-200 px-2 rounded-lg"
+      buttonClass="rounded-none"
+    />
+    <lib-shared-date-filter (rangeChange)="facade.updateDateFilter($event)" #dateFilter />
+    <button
+      type="button"
+      class="rounded-lg h-10 bg-white px-4 py-2 text-sm text-slate-600 hover:bg-slate-100"
+      (click)="facade.clearFilters(); dateFilter.reset()"
+    >
+      Clear filters
+    </button>
+  </div>
+  @if (facade.errorMessage(); as message) {
     <div class="rounded-xl bg-white p-6 text-red-600 shadow">
       {{ message }}
     </div>
-  } @else if (bookings().length === 0) {
+  } @else if (facade.isLoading() && facade.bookings().length === 0) {
+    <div class="rounded-xl bg-white p-6 shadow">Loading bookings...</div>
+  } @else if (!facade.isLoading() && facade.bookings().length === 0) {
     <div class="rounded-xl bg-white p-10 text-center shadow">
       <p class="font-semibold text-slate-900">No bookings yet</p>
-      <p class="mt-1 text-sm text-slate-500">
-        New appointments will appear here when customers make a booking.
-      </p>
     </div>
   } @else {
     <div class="overflow-hidden rounded-xl bg-white shadow">
       <div class="overflow-x-auto">
-        <table class="w-full min-w-[70rem] text-left">
+        <table class="w-full min-w-280 text-left">
           <thead class="bg-slate-100 text-sm text-slate-500">
             <tr>
               <th class="px-6 py-4 text-center font-semibold">Booking</th>
@@ -58,7 +64,7 @@
           </thead>
 
           <tbody class="divide-y divide-slate-200">
-            @for (booking of bookings(); track booking.id) {
+            @for (booking of facade.bookings(); track booking.id) {
               <tr class="transition-colors hover:bg-slate-50">
                 <td class="px-6 py-5 text-center font-semibold">
                   {{ booking.bookingReference }}
@@ -73,16 +79,16 @@
                   {{ booking.customer.phoneE164 }}
                 </td>
                 <td class="px-6 py-5 text-center text-slate-500">
-                  {{ booking.startsAt }}
+                  {{ booking.startsAt | date: 'dd/MM/yyyy HH:mm' }}
                 </td>
                 <td class="px-6 py-5 text-center">
                   <app-select
                     [id]="'booking-status-' + booking.id"
-                    [options]="bookingStatusOptions"
+                    [options]="facade.bookingStatusOptions"
                     containerClass="min-w-52"
                     [value]="booking.status"
-                    [disabled]="isBookingStatusUpdating(booking.id)"
-                    (valueChange)="onBookingStatusChange(booking, $event)"
+                    [disabled]="facade.isBookingStatusUpdating(booking.id)"
+                    (valueChange)="facade.updateBookingStatus(booking, $event)"
                   />
                 </td>
               </tr>
@@ -92,12 +98,12 @@
       </div>
     </div>
 
-    @if (pagination(); as pageInfo) {
+    @if (facade.pagination(); as pageInfo) {
       <app-pagination
         [currentPage]="pageInfo.page"
         [totalPages]="pageInfo.totalPages"
-        [disabled]="isLoading()"
-        (pageChange)="changePage($event)"
+        [disabled]="facade.isLoading()"
+        (pageChange)="facade.changePage($event)"
       />
     }
   }

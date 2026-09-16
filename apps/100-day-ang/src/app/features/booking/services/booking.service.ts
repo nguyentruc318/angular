@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { map, Observable } from 'rxjs';
+
 import type {
   Booking,
   BookingListParams,
@@ -11,31 +13,63 @@ import type {
 @Injectable({ providedIn: 'root' })
 export class BookingService {
   private readonly http = inject(HttpClient);
-  list({ page = 1, limit = 10, search, from, to, status }: BookingListParams = {}) {
-    let params = new HttpParams().set('page', page).set('limit', limit);
+  private readonly bookingsUrl = environment.apiBaseUrl + '/bookings';
 
-    if (search) {
-      params = params.set('search', search);
-    }
+  list({
+    page = 1,
+    limit = 10,
+    search,
+    from,
+    to,
+    status,
+  }: BookingListParams = {}): Observable<BookingListResponse> {
+    return this.http.get<Booking[]>(this.bookingsUrl).pipe(
+      map((bookings) => {
+        const normalizedSearch = search?.trim().toLowerCase();
 
-    if (from) {
-      params = params.set('from', from);
-    }
+        const filteredBookings = bookings.filter((booking) => {
+          const bookingDate = booking.startsAt.slice(0, 10);
+          const searchableText = [
+            booking.bookingReference,
+            booking.type,
+            booking.customer.fullName,
+            booking.customer.phoneE164,
+          ]
+            .join(' ')
+            .toLowerCase();
 
-    if (to) {
-      params = params.set('to', to);
-    }
+          return (
+            (!normalizedSearch || searchableText.includes(normalizedSearch)) &&
+            (!from || bookingDate >= from) &&
+            (!to || bookingDate <= to) &&
+            (!status || booking.status === status)
+          );
+        });
 
-    if (status) {
-      params = params.set('status', status);
-    }
+        const total = filteredBookings.length;
+        const totalPages = Math.max(1, Math.ceil(total / limit));
+        const currentPage = Math.min(Math.max(page, 1), totalPages);
+        const startIndex = (currentPage - 1) * limit;
 
-    return this.http.get<BookingListResponse>(`${environment.apiBaseUrl}/bookings`, { params });
+        return {
+          success: true,
+          data: filteredBookings.slice(startIndex, startIndex + limit),
+          pagination: {
+            page: currentPage,
+            limit,
+            total,
+            totalPages,
+          },
+        };
+      }),
+    );
   }
+
   updateStatus(bookingId: string, status: BookingStatus) {
     return this.http.put<{ success: boolean; data?: Booking }>(
-      `${environment.apiBaseUrl}/bookings/${bookingId}/status`,
+      this.bookingsUrl + '/' + bookingId + '/status',
       { status },
     );
   }
 }
+

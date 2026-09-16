@@ -1,18 +1,22 @@
-<div role="tablist" class="inline-flex gap-1 rounded-lg bg-slate-100 p-1">
+<div role="tablist" [class]="'inline-flex gap-1 ' + tabClass()">
   @for (tab of tabs(); track tab.value) {
     <button
       type="button"
       role="tab"
       [disabled]="tab.disabled"
       [attr.aria-selected]="value() === tab.value"
-      [class.bg-white]="value() === tab.value"
+      class="relative px-4 py-3 text-sm font-medium transition-colors duration-200"
       [class.text-violet-700]="value() === tab.value"
-      [class.shadow-sm]="value() === tab.value"
       [class.text-slate-600]="value() !== tab.value"
-      class="rounded-md px-4 py-2 text-sm font-medium transition hover:text-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
       (click)="selectTab(tab)"
     >
       {{ tab.label }}
+
+      <span
+        class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-center bg-violet-600 transition-transform duration-300 ease-out"
+        [class.scale-x-100]="value() === tab.value"
+        [class.scale-x-0]="value() !== tab.value"
+      ></span>
     </button>
   }
 </div>

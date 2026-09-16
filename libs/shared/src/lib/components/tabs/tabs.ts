@@ -14,7 +14,8 @@ export interface TabOption {
 export class TabsComponent {
   readonly tabs = input.required<readonly TabOption[]>();
   readonly value = input('');
-
+  readonly tabClass = input<string>('');
+  readonly buttonClass = input('');
   readonly valueChange = output<string>();
 
   selectTab(tab: TabOption): void {

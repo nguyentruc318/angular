@@ -29,6 +29,14 @@ export class Login {
       control.markAsUntouched();
     }
   }
+  syncField(field: 'email' | 'password', event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    const control = this.loginForm.controls[field];
+
+    control.setValue(value);
+    control.updateValueAndValidity();
+    this.clearFieldTouched(field);
+  }
   onSubmit(): void {
     if (this.isSubmitting()) return;
 

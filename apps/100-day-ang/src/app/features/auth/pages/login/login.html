@@ -15,7 +15,8 @@
           formControlName="email"
           autocomplete="email"
           placeholder="you@example.com"
-          (input)="clearFieldTouched('email')"
+          (input)="syncField('email', $event)"
+          (change)="syncField('email', $event)"
           class="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
 
@@ -33,7 +34,8 @@
           id="password"
           type="password"
           formControlName="password"
-          (input)="clearFieldTouched('password')"
+          (input)="syncField('password', $event)"
+          (change)="syncField('password', $event)"
           autocomplete="current-password"
           placeholder="Enter your password"
           class="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
