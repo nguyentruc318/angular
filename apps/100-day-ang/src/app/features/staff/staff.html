@@ -1,3 +1,172 @@
-<section class="p-6">
-  <h1 class="text-2xl font-bold text-slate-900">Staff</h1>
+<section class="flex flex-col gap-6 p-6">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-900">Staff</h1>
+      <p class="mt-1 text-slate-500">View your team and contact details.</p>
+    </div>
+
+    @if (!facade.isLoading() && !facade.errorMessage()) {
+      <span class="rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
+        {{ facade.pagination()?.total ?? 0 }} staff found
+      </span>
+    }
+  </div>
+
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <app-search-input
+      class="w-full sm:w-80"
+      id="staff-search"
+      label="Search staff"
+      placeholder="Name or email..."
+      [value]="facade.search()"
+      (valueChange)="facade.updateSearch($event)"
+    />
+    <a
+      routerLink="/staff/create"
+      class="inline-flex h-11 items-center gap-2 rounded-lg bg-violet-600 px-4 text-sm font-semibold text-white transition hover:bg-violet-700"
+    >
+      <ng-icon name="lucidePlus" class="size-4" aria-hidden="true" />
+      Create staff
+    </a>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-4">
+    <lib-shared-tabs
+      [tabs]="facade.statusTabs"
+      [value]="facade.status() ?? ''"
+      (valueChange)="facade.updateStatusFilter($event)"
+      tabClass="rounded-lg bg-white px-2"
+      buttonClass="rounded-none"
+    />
+    <button
+      type="button"
+      class="rounded-lg h-10 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100 disabled:cursor-not-allowed"
+      [disabled]="!facade.hasFilters()"
+      (click)="facade.clearFilters()"
+    >
+      Clear filters
+    </button>
+  </div>
+
+  @if (facade.isLoading()) {
+    <div role="status" class="rounded-xl bg-white p-6 shadow">Loading staff...</div>
+  } @else if (facade.errorMessage(); as message) {
+    <div class="rounded-xl bg-white p-6 shadow">
+      <p role="alert" class="text-red-600">{{ message }}</p>
+    </div>
+  } @else if (facade.staffMembers().length === 0) {
+    <div class="rounded-xl bg-white p-10 text-center shadow">
+      <p class="font-semibold text-slate-900">
+        {{ facade.hasFilters() ? 'No staff match your filters' : 'No staff yet' }}
+      </p>
+      <p class="mt-1 text-sm text-slate-500">
+        {{
+          facade.hasFilters()
+            ? 'Try another search or clear the filters.'
+            : 'Team members will appear here once added.'
+        }}
+      </p>
+    </div>
+  } @else {
+    <div class="overflow-hidden rounded-xl bg-white shadow">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[45rem] text-left">
+          <caption class="sr-only">
+            Staff contact details and status
+          </caption>
+          <thead class="bg-slate-100 text-sm text-slate-500">
+            <tr>
+              <th scope="col" class="px-6 py-4 font-semibold">Name</th>
+              <th scope="col" class="px-6 py-4 font-semibold">Email</th>
+
+              <th scope="col" class="px-6 py-4 font-semibold">Status</th>
+              <th scope="col" class="px-6 py-4 text-right font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            @for (member of facade.staffMembers(); track member.id) {
+              <tr class="transition-colors hover:bg-slate-50">
+                <td class="px-6 py-5 font-medium text-slate-900">{{ member.name }}</td>
+                <td class="px-6 py-5 text-slate-500">{{ member.email }}</td>
+                <td class="px-6 py-5">
+                  <span
+                    class="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
+                    [class.bg-emerald-100]="member.status === 'active'"
+                    [class.text-emerald-700]="member.status === 'active'"
+                    [class.bg-slate-100]="member.status !== 'active'"
+                    [class.text-slate-600]="member.status !== 'active'"
+                  >
+                    {{ member.status === 'active' ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="flex justify-end gap-1">
+                    <a
+                      [routerLink]="['/staff', member.id, 'edit']"
+                      class="inline-flex size-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-violet-100 hover:text-violet-700"
+                      [attr.aria-label]="'Edit ' + member.name"
+                      [title]="'Edit ' + member.name"
+                    >
+                      <ng-icon name="lucidePencil" class="size-4" aria-hidden="true" />
+                    </a>
+                    <button
+                      type="button"
+                      class="inline-flex size-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                      [attr.aria-label]="'Delete ' + member.name"
+                      [title]="'Delete ' + member.name"
+                      [disabled]="facade.isSaving()"
+                      (click)="openDeleteModal(member)"
+                    >
+                      <ng-icon name="lucideTrash2" class="size-4" aria-hidden="true" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+  @if (!facade.isLoading() && !facade.errorMessage()) {
+    @if (facade.pagination(); as pageInfo) {
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <app-pagination
+          [currentPage]="pageInfo.page"
+          [totalPages]="pageInfo.totalPages"
+          (pageChange)="facade.changePage($event)"
+        />
+      </div>
+    }
+  }
+  <lib-shared-modal
+    [isOpen]="staffToDelete() !== null"
+    title="Delete staff member"
+    (closed)="closeDeleteModal()"
+  >
+    @if (staffToDelete(); as member) {
+      <p class="text-slate-600">
+        Are you sure you want to delete <strong>{{ member.name }}</strong
+        >?
+      </p>
+    }
+    <div modal-actions class="flex justify-end gap-3">
+      <button
+        type="button"
+        class="rounded-lg border border-slate-300 px-4 py-2 text-sm"
+        [disabled]="facade.isSaving()"
+        (click)="closeDeleteModal()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+        [disabled]="facade.isSaving()"
+        (click)="confirmDelete()"
+      >
+        Delete
+      </button>
+    </div>
+  </lib-shared-modal>
 </section>

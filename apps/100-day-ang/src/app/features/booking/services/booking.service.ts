@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { map, Observable } from 'rxjs';
@@ -23,7 +23,9 @@ export class BookingService {
     to,
     status,
   }: BookingListParams = {}): Observable<BookingListResponse> {
-    return this.http.get<Booking[]>(this.bookingsUrl).pipe(
+    const httpParams = new HttpParams().set('_sort', '-createdAt');
+
+    return this.http.get<Booking[]>(this.bookingsUrl, { params: httpParams }).pipe(
       map((bookings) => {
         const normalizedSearch = search?.trim().toLowerCase();
 
@@ -31,7 +33,6 @@ export class BookingService {
           const bookingDate = booking.startsAt.slice(0, 10);
           const searchableText = [
             booking.bookingReference,
-            booking.type,
             booking.customer.fullName,
             booking.customer.phoneE164,
           ]
@@ -65,11 +66,19 @@ export class BookingService {
     );
   }
 
+  remove(bookingId: string): Observable<void> {
+    return this.http.delete<void>(this.bookingsUrl + '/' + encodeURIComponent(bookingId));
+  }
   updateStatus(bookingId: string, status: BookingStatus) {
     return this.http.put<{ success: boolean; data?: Booking }>(
       this.bookingsUrl + '/' + bookingId + '/status',
       { status },
     );
   }
+  create(payload: Booking): Observable<Booking> {
+    return this.http.post<Booking>(this.bookingsUrl, payload);
+  }
+  detail(bookingId: string): Observable<Booking> {
+    return this.http.get<Booking>(`${this.bookingsUrl}/${encodeURIComponent(bookingId)}`);
+  }
 }
-

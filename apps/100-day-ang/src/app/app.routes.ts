@@ -1,4 +1,4 @@
-﻿import { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -73,18 +73,33 @@ export const routes: Routes = [
       },
       {
         path: 'staff',
-        loadComponent: () => import('./features/staff/staff').then((m) => m.Staff),
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () => import('./features/staff/staff').then((m) => m.Staff),
+          },
+          {
+            path: 'create',
+            loadComponent: () =>
+              import('./features/staff/page/create-staff/create-staff').then((m) => m.CreateStaff),
+          },
+          {
+            path: ':staffId/edit',
+            loadComponent: () =>
+              import('./features/staff/page/edit-staff/edit-staff').then((m) => m.EditStaff),
+          },
+        ],
       },
       {
         path: '',
         pathMatch: 'full',
         redirectTo: 'dashboard',
       },
-      {
-        path: '**',
-        redirectTo: 'dashboard',
-      },
     ],
   },
+  {
+    path: '**',
+    loadComponent: () => import('./features/not-found/not-found').then((m) => m.NotFound),
+  },
 ];
-

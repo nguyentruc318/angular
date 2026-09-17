@@ -199,6 +199,21 @@
         "fullName": "Ella White",
         "phoneE164": "+14155550112"
       }
+    },
+    {
+      "id": "z3At-puEFOU",
+      "bookingReference": "ATN-988240",
+      "serviceId": "service-002",
+      "staffId": "staff-002",
+      "status": "pending_confirmation",
+      "startsAt": "2026-09-18T11:00:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "cc5ebc34-b218-48c3-8221-b650444f7483",
+        "fullName": "Trực Bùi Nguyên",
+        "phoneE164": "0394084336",
+        "email": "trucbn@smartosc.com"
+      }
     }
   ],
   "services": [
@@ -261,6 +276,12 @@
       "email": "ava.martinez@example.com",
       "role": "Nail Artist",
       "status": "active"
+    },
+    {
+      "name": "Trực Bùi Nguyên",
+      "email": "trucbn@smartosc.com",
+      "status": "inactive",
+      "id": "DmINLUnPQPM"
     }
   ],
   "categories": [

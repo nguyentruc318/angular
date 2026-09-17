@@ -1,0 +1,16 @@
+<section class="mx-auto w-full max-w-3xl p-6">
+  <a routerLink="/staff" class="text-sm font-medium text-violet-700 hover:text-violet-800"
+    >← Back to staff</a
+  >
+
+  <div class="mb-6 mt-4">
+    <h1 class="text-3xl font-bold text-slate-900">Create staff</h1>
+    <p class="mt-1 text-slate-500">Add a team member who can be assigned to bookings.</p>
+  </div>
+
+  <app-staff-form
+    [isSubmitting]="facade.isSaving()"
+    submitLabel="Create staff"
+    (submitted)="createStaff($event)"
+  />
+</section>

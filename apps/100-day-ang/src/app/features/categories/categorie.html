@@ -1,4 +1,4 @@
-﻿<section class="space-y-6 p-4 sm:p-6">
+<section class="space-y-6 p-4 sm:p-6">
   <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
     <div>
       <p class="text-sm font-medium text-violet-600">Categories management</p>
@@ -15,7 +15,7 @@
     </a>
   </div>
 
-  <div class="">
+  <div class="space-y-4">
     <div class="flex flex-wrap items-end gap-4">
       <app-search-input
         class="w-full sm:w-80"
@@ -42,16 +42,7 @@
             role="dialog"
             aria-label="Category filters"
           >
-            <div class="space-y-4">
-              <app-select
-                id="category-activity"
-                label="Status"
-                containerClass="w-full min-w-0"
-                [options]="activityOptions"
-                [value]="activityValue()"
-                (valueChange)="facade.updateActivity($event)"
-              />
-
+            <div>
               <app-select
                 id="category-sort"
                 label="Sort by"
@@ -69,6 +60,20 @@
         }
       </div>
     </div>
+
+    <lib-shared-tabs
+      [tabs]="statusTabs"
+      [value]="
+        facade.listParams().isActive === undefined
+          ? ''
+          : facade.listParams().isActive
+            ? 'true'
+            : 'false'
+      "
+      (valueChange)="facade.updateActivity($event)"
+      tabClass="bg-white border-b border-slate-200 px-2 rounded-lg"
+      buttonClass="rounded-none"
+    />
   </div>
 
   @if (facade.isLoading()) {

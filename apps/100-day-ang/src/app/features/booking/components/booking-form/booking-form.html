@@ -1,0 +1,175 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-8">
+  <fieldset class="space-y-6" [disabled]="isSubmitting()">
+    <section class="rounded-xl border border-slate-200 bg-slate-50/60 p-5 sm:p-6">
+      <div class="mb-5">
+        <h3 class="text-base font-semibold text-slate-900">Customer details</h3>
+        <p class="mt-1 text-sm text-slate-500">Contact information for this appointment.</p>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div class="sm:col-span-2">
+          <label for="customer-name" class="mb-1.5 block text-sm font-medium text-slate-700">
+            Full name
+          </label>
+          <input
+            id="customer-name"
+            type="text"
+            autocomplete="name"
+            formControlName="customerName"
+            class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            [class.border-red-500]="
+              form.controls.customerName.touched && form.controls.customerName.invalid
+            "
+            [attr.aria-invalid]="
+              form.controls.customerName.touched && form.controls.customerName.invalid
+            "
+          />
+          @if (form.controls.customerName.touched && form.controls.customerName.invalid) {
+            <p class="mt-1.5 text-xs text-red-600">Enter the customer's name.</p>
+          }
+        </div>
+
+        <div>
+          <label for="customer-phone" class="mb-1.5 block text-sm font-medium text-slate-700">
+            Phone number
+          </label>
+          <input
+            id="customer-phone"
+            type="tel"
+            autocomplete="tel"
+            placeholder="0912345678"
+            formControlName="phone"
+            class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            [class.border-red-500]="form.controls.phone.touched && form.controls.phone.invalid"
+            [attr.aria-invalid]="form.controls.phone.touched && form.controls.phone.invalid"
+          />
+          @if (form.controls.phone.touched && form.controls.phone.invalid) {
+            <p class="mt-1.5 text-xs text-red-600">
+              Enter a valid Vietnamese mobile number, for example 0912345678.
+            </p>
+          }
+        </div>
+
+        <div>
+          <label for="customer-email" class="mb-1.5 block text-sm font-medium text-slate-700">
+            Email address
+          </label>
+          <input
+            id="customer-email"
+            type="email"
+            autocomplete="email"
+            placeholder="name@example.com"
+            formControlName="email"
+            class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            [class.border-red-500]="form.controls.email.touched && form.controls.email.invalid"
+            [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+          />
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <p class="mt-1.5 text-xs text-red-600">Enter a valid email address.</p>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-slate-200 bg-slate-50/60 p-5 sm:p-6">
+      <div class="mb-5">
+        <h3 class="text-base font-semibold text-slate-900">Appointment details</h3>
+        <p class="mt-1 text-sm text-slate-500">Choose the service, time, and staff member.</p>
+      </div>
+
+      <div class="space-y-5">
+        <div>
+          <app-select
+            id="booking-service"
+            label="Service"
+            placeholder="Choose a service"
+            containerClass="w-full"
+            [options]="serviceOptions()"
+            [value]="form.controls.serviceId.value"
+            [disabled]="isSubmitting()"
+            (valueChange)="onServiceChange($event)"
+          />
+          @if (form.controls.serviceId.touched && form.controls.serviceId.invalid) {
+            <p class="mt-1.5 text-xs text-red-600">Choose a service.</p>
+          }
+        </div>
+
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label for="booking-date" class="mb-1.5 block text-sm font-medium text-slate-700">
+              Date
+            </label>
+            <div class="relative">
+              <input
+                id="booking-date"
+                type="text"
+                readonly
+                matInput
+                [matDatepicker]="bookingDatePicker"
+                formControlName="date"
+                class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 pr-11 text-sm text-slate-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+                [class.border-red-500]="form.controls.date.touched && form.controls.date.invalid"
+              />
+
+              <button
+                type="button"
+                class="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-2 text-slate-500 hover:bg-violet-50 hover:text-violet-700"
+                aria-label="Choose booking date"
+                (click)="bookingDatePicker.open()"
+              >
+                <ng-icon name="lucideCalendarDays" class="size-4" aria-hidden="true" />
+              </button>
+
+              <mat-datepicker #bookingDatePicker />
+            </div>
+            @if (form.controls.date.touched && form.controls.date.invalid) {
+              <p class="mt-1.5 text-xs text-red-600">Choose a date.</p>
+            }
+          </div>
+
+          <div>
+            <label for="booking-time" class="mb-1.5 block text-sm font-medium text-slate-700">
+              Time
+            </label>
+            <input
+              id="booking-time"
+              type="time"
+              formControlName="time"
+              class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              [class.border-red-500]="form.controls.time.touched && form.controls.time.invalid"
+            />
+            @if (form.controls.time.touched && form.controls.time.invalid) {
+              <p class="mt-1.5 text-xs text-red-600">Choose a time.</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <app-select
+            id="booking-staff"
+            label="Staff member"
+            placeholder="Choose a staff member"
+            containerClass="w-full"
+            [options]="staffOptions()"
+            [value]="form.controls.staffId.value"
+            [disabled]="isSubmitting()"
+            (valueChange)="onStaffChange($event)"
+          />
+          @if (form.controls.staffId.touched && form.controls.staffId.invalid) {
+            <p class="mt-1.5 text-xs text-red-600">Choose a staff member.</p>
+          }
+        </div>
+      </div>
+    </section>
+  </fieldset>
+
+  <div class="flex justify-end border-t border-slate-200 pt-6">
+    <button
+      type="submit"
+      [disabled]="isSubmitting()"
+      class="inline-flex h-11 items-center justify-center rounded-lg bg-violet-600 px-5 text-sm font-semibold text-white transition hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-200 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {{ isSubmitting() ? 'Saving...' : submitLabel() }}
+    </button>
+  </div>
+</form>

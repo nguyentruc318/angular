@@ -1,0 +1,25 @@
+<section class="mx-auto w-full max-w-3xl p-6">
+  <a routerLink="/staff" class="text-sm font-medium text-violet-700 hover:text-violet-800"
+    >← Back to staff</a
+  >
+
+  <div class="mb-6 mt-4">
+    <h1 class="text-3xl font-bold text-slate-900">Edit staff</h1>
+    <p class="mt-1 text-slate-500">Update this team member's contact details and status.</p>
+  </div>
+
+  @if (isLoading()) {
+    <div role="status" class="rounded-2xl bg-white p-6 shadow">Loading staff...</div>
+  } @else if (errorMessage(); as message) {
+    <div class="rounded-2xl bg-white p-6 shadow">
+      <p role="alert" class="text-red-600">{{ message }}</p>
+    </div>
+  } @else if (staff(); as member) {
+    <app-staff-form
+      [initialValue]="member"
+      [isSubmitting]="isSaving()"
+      submitLabel="Save changes"
+      (submitted)="updateStaff($event)"
+    />
+  }
+</section>

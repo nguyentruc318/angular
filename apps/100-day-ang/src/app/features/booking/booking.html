@@ -11,7 +11,7 @@
       </span>
     }
   </div>
-  <div class="flex flex-wrap items-center gap-4">
+  <div class="flex flex-wrap items-center gap-4 justify-between">
     <app-search-input
       class="w-full sm:w-80"
       id="booking-search"
@@ -20,6 +20,13 @@
       [value]="facade.search()"
       (valueChange)="facade.updateSearch($event)"
     />
+    <button
+      type="button"
+      class="h-12 rounded-lg bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+      (click)="facade.openCreate()"
+    >
+      Create booking
+    </button>
   </div>
   <div class="flex flex-wrap items-center gap-4">
     <lib-shared-tabs
@@ -55,11 +62,12 @@
           <thead class="bg-slate-100 text-sm text-slate-500">
             <tr>
               <th class="px-6 py-4 text-center font-semibold">Booking</th>
-              <th class="px-6 py-4 text-center font-semibold">Type</th>
+
               <th class="px-6 py-4 text-center font-semibold">Customer</th>
               <th class="px-6 py-4 text-center font-semibold">Phone</th>
               <th class="px-6 py-4 text-center font-semibold">Appointment</th>
               <th class="px-6 py-4 text-center font-semibold">Status</th>
+              <th class="px-6 py-4 text-right font-semibold">Actions</th>
             </tr>
           </thead>
 
@@ -69,9 +77,7 @@
                 <td class="px-6 py-5 text-center font-semibold">
                   {{ booking.bookingReference }}
                 </td>
-                <td class="px-6 py-5 text-center text-slate-500">
-                  {{ booking.type }}
-                </td>
+
                 <td class="px-6 py-5 text-center font-medium text-slate-900">
                   {{ booking.customer.fullName }}
                 </td>
@@ -91,13 +97,79 @@
                     (valueChange)="facade.updateBookingStatus(booking, $event)"
                   />
                 </td>
+                <td class="px-6 py-5">
+                  <div class="flex justify-end gap-1">
+                    <button
+                      type="button"
+                      class="inline-flex size-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-violet-100 hover:text-violet-700"
+                      [attr.aria-label]="'Edit ' + booking.bookingReference"
+                      [title]="'Edit ' + booking.bookingReference"
+                      (click)="facade.openEdit(booking.id)"
+                    >
+                      <ng-icon name="lucidePencil" class="size-4" aria-hidden="true" />
+                    </button>
+                    <button
+                      type="button"
+                      class="inline-flex size-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                      [attr.aria-label]="'Delete ' + booking.bookingReference"
+                      [title]="'Delete ' + booking.bookingReference"
+                      [disabled]="facade.isBookingDeleting()"
+                      (click)="openDeleteModal(booking)"
+                    >
+                      <ng-icon name="lucideTrash2" class="size-4" aria-hidden="true" />
+                    </button>
+                  </div>
+                </td>
               </tr>
             }
           </tbody>
         </table>
       </div>
     </div>
-
+    <lib-shared-modal
+      [isOpen]="bookingToDelete() !== null"
+      title="Delete booking"
+      (closed)="closeDeleteModal()"
+    >
+      @if (bookingToDelete(); as booking) {
+        <p class="text-slate-600">
+          Are you sure you want to delete booking <strong>{{ booking.bookingReference }}</strong
+          >?
+        </p>
+      }
+      <div modal-actions class="flex justify-end gap-3">
+        <button
+          type="button"
+          class="rounded-lg border border-slate-300 px-4 py-2 text-sm"
+          [disabled]="facade.isBookingDeleting()"
+          (click)="closeDeleteModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          [disabled]="facade.isBookingDeleting()"
+          (click)="confirmDelete()"
+        >
+          Delete
+        </button>
+      </div>
+    </lib-shared-modal>
+    <lib-shared-sheet
+      [isOpen]="facade.isBookingFormOpen()"
+      title="facade.formMode() === 'create' ? 'Create booking' : 'Edit booking'"
+      (closed)="facade.closeBookingForm()"
+    >
+      <p class="text-sm text-slate-500">Điền thông tin để tạo lịch hẹn mới.</p>
+      <app-booking-form
+        [serviceOptions]="facade.serviceOptions()"
+        [initialValue]="facade.editingBooking()"
+        [staffOptions]="facade.staffOptions()"
+        [isSubmitting]="facade.isCreating()"
+        (submitted)="facade.createBooking($event)"
+      />
+    </lib-shared-sheet>
     @if (facade.pagination(); as pageInfo) {
       <app-pagination
         [currentPage]="pageInfo.page"
