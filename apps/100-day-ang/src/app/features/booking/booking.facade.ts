@@ -76,6 +76,9 @@ export class BookingFacade {
     this.searchChanges$.next(value.trim());
   }
 
+  formatBookingStatus(status: BookingStatus): string {
+    return formatLabel(status);
+  }
   openCreate(): void {
     this.formMode.set('create');
     this.editingBooking.set(null);

@@ -88,14 +88,33 @@
                   {{ booking.startsAt | date: 'dd/MM/yyyy HH:mm' }}
                 </td>
                 <td class="px-6 py-5 text-center">
-                  <app-select
-                    [id]="'booking-status-' + booking.id"
-                    [options]="facade.bookingStatusOptions"
-                    containerClass="min-w-52"
-                    [value]="booking.status"
-                    [disabled]="facade.isBookingStatusUpdating(booking.id)"
-                    (valueChange)="facade.updateBookingStatus(booking, $event)"
-                  />
+                  <div class="inline-flex">
+                    <button
+                      type="button"
+                      [matMenuTriggerFor]="statusMenu"
+                      class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
+                      [class.bg-blue-100]="booking.status === 'confirmed'"
+                      [class.text-blue-700]="booking.status === 'confirmed'"
+                      [class.bg-amber-100]="booking.status === 'pending_confirmation'"
+                      [class.text-amber-700]="booking.status === 'pending_confirmation'"
+                      [class.bg-emerald-100]="booking.status === 'checked_out'"
+                      [class.text-emerald-700]="booking.status === 'checked_out'"
+                    >
+                      {{ facade.formatBookingStatus(booking.status) }}
+                    </button>
+
+                    <mat-menu #statusMenu="matMenu">
+                      @for (status of facade.bookingStatusOptions; track status.value) {
+                        <button
+                          mat-menu-item
+                          type="button"
+                          (click)="facade.updateBookingStatus(booking, status.value)"
+                        >
+                          {{ status.label }}
+                        </button>
+                      }
+                    </mat-menu>
+                  </div>
                 </td>
                 <td class="px-6 py-5">
                   <div class="flex justify-end gap-1">

@@ -3,10 +3,9 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucidePencil, lucideTrash2 } from '@ng-icons/lucide';
 import { DateFilterComponent, Modal, SheetDialog, TabsComponent } from 'shared';
-
+import { MatMenuModule } from '@angular/material/menu';
 import { PaginationComponent } from '../../shared/components/pagination/pagination';
 import { SearchInputComponent } from '../../shared/components/search/search';
-import { SelectComponent } from '../../shared/components/select/select';
 import type { Booking as BookingItem } from './models/booking.model';
 import { BookingFacade } from './booking.facade';
 import { BookingForm } from './components/booking-form/booking-form';
@@ -19,9 +18,9 @@ import { BookingForm } from './components/booking-form/booking-form';
     DatePipe,
     SheetDialog,
     DateFilterComponent,
-    SelectComponent,
     TabsComponent,
     NgIcon,
+    MatMenuModule,
     Modal,
     BookingForm,
   ],
