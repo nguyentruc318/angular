@@ -158,16 +158,23 @@
     </lib-shared-modal>
     <lib-shared-sheet
       [isOpen]="facade.isBookingFormOpen()"
-      title="facade.formMode() === 'create' ? 'Create booking' : 'Edit booking'"
+      [title]="facade.formMode() === 'create' ? 'Create booking' : 'Edit booking'"
       (closed)="facade.closeBookingForm()"
     >
-      <p class="text-sm text-slate-500">Điền thông tin để tạo lịch hẹn mới.</p>
+      <p class="text-sm text-slate-500">
+        {{
+          facade.formMode() === 'create'
+            ? 'Fill in the details to create a new appointment.'
+            : 'Update the customer and appointment details.'
+        }}
+      </p>
       <app-booking-form
         [serviceOptions]="facade.serviceOptions()"
-        [initialValue]="facade.editingBooking()"
+        [initialValue]="facade.editingFormValue()"
         [staffOptions]="facade.staffOptions()"
-        [isSubmitting]="facade.isCreating()"
-        (submitted)="facade.createBooking($event)"
+        [submitLabel]="facade.formMode() === 'create' ? 'Create booking' : 'Save changes'"
+        [isSubmitting]="facade.formMode() === 'create' ? facade.isCreating() : facade.isUpdating()"
+        (submitted)="facade.saveBooking($event)"
       />
     </lib-shared-sheet>
     @if (facade.pagination(); as pageInfo) {

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, finalize, Subject } from 'rxjs';
@@ -9,6 +9,7 @@ import { QueryParamsService } from '../../core/services/query-params.service';
 import { SelectOption } from '../../shared/components/select/select';
 import { formatLabel } from '../../shared/utils/format-label';
 import { forkJoin } from 'rxjs';
+
 import {
   BOOKING_STATUSES,
   Booking,
@@ -45,9 +46,13 @@ export class BookingFacade {
   readonly isBookingFormOpen = signal(false);
   readonly formMode = signal<'create' | 'edit'>('create');
   readonly serviceOptions = signal<SelectOption[]>([]);
-  readonly isEditOpen = signal(false);
   readonly isEditLoading = signal(false);
-  readonly editingBooking = signal<BookingFormInitialValue | null>(null);
+  readonly isUpdating = signal(false);
+  readonly editingBooking = signal<Booking | null>(null);
+  readonly editingFormValue = computed<BookingFormInitialValue | null>(() => {
+    const booking = this.editingBooking();
+    return booking ? this.toFormInitialValue(booking) : null;
+  });
   readonly staffOptions = signal<SelectOption[]>([]);
   readonly statusTabs: readonly TabOption[] = [
     { value: '', label: 'All statuses' },
@@ -72,8 +77,9 @@ export class BookingFacade {
   }
 
   openCreate(): void {
-    this.isBookingFormOpen.set(true);
     this.formMode.set('create');
+    this.editingBooking.set(null);
+    this.isBookingFormOpen.set(true);
     this.loadCreateOptions();
   }
 
@@ -321,6 +327,64 @@ export class BookingFacade {
         },
       });
   }
+  saveBooking(formValue: BookingFormValue): void {
+    if (this.formMode() === 'edit') {
+      this.updateBooking(formValue);
+      return;
+    }
+
+    this.createBooking(formValue);
+  }
+
+  private updateBooking(formValue: BookingFormValue): void {
+    const booking = this.editingBooking();
+
+    if (!booking || this.isUpdating()) {
+      return;
+    }
+
+    const startsAt = new Date(`${formValue.date}T${formValue.time}:00`);
+
+    if (Number.isNaN(startsAt.getTime())) {
+      toast.error('Please choose a valid date and time.');
+      return;
+    }
+
+    const updatedBooking: Booking = {
+      ...booking,
+      serviceId: formValue.serviceId,
+      staffId: formValue.staffId,
+      startsAt: startsAt.toISOString(),
+      customer: {
+        ...booking.customer,
+        fullName: formValue.customerName.trim(),
+        phoneE164: formValue.phone.trim(),
+        email: formValue.email.trim().toLowerCase(),
+      },
+    };
+
+    this.isUpdating.set(true);
+
+    this.bookingService
+      .update(updatedBooking)
+      .pipe(finalize(() => this.isUpdating.set(false)))
+      .subscribe({
+        next: () => {
+          toast.success('Booking updated');
+          this.closeBookingForm();
+          this.loadBookings({
+            page: this.pagination()?.page ?? 1,
+            search: this.search(),
+            status: this.status() ?? undefined,
+            from: this.fromDate() ?? undefined,
+            to: this.toDate() ?? undefined,
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          toast.error(error.error?.message ?? 'Unable to update booking.');
+        },
+      });
+  }
   openEdit(bookingId: string): void {
     this.isBookingFormOpen.set(true);
     this.formMode.set('edit');
@@ -332,10 +396,10 @@ export class BookingFacade {
       .pipe(finalize(() => this.isEditLoading.set(false)))
       .subscribe({
         next: (booking) => {
-          this.editingBooking.set(this.toFormInitialValue(booking));
+          this.editingBooking.set(booking);
         },
         error: (error: HttpErrorResponse) => {
-          this.isEditOpen.set(false);
+          this.closeBookingForm();
           toast.error(error.error?.message ?? 'Unable to load booking.');
         },
       });

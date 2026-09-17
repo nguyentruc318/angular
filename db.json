@@ -210,6 +210,22 @@
       "timezone": "America/New_York",
       "customer": {
         "id": "cc5ebc34-b218-48c3-8221-b650444f7483",
+        "fullName": "Trực",
+        "phoneE164": "0394084336",
+        "email": "trucbn@smartosc.com"
+      }
+    },
+    {
+      "id": "59Ma1xamKDI",
+      "bookingReference": "ATN-406731",
+      "serviceId": "service-001",
+      "staffId": "staff-002",
+      "status": "pending_confirmation",
+      "createdAt": "2026-09-17T10:53:26.731Z",
+      "startsAt": "2026-09-18T11:00:00.000Z",
+      "timezone": "America/New_York",
+      "customer": {
+        "id": "4f9620c9-ddf2-4bd5-8f4f-8b05bb933594",
         "fullName": "Trực Bùi Nguyên",
         "phoneE164": "0394084336",
         "email": "trucbn@smartosc.com"

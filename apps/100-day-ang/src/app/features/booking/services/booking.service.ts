@@ -81,4 +81,8 @@ export class BookingService {
   detail(bookingId: string): Observable<Booking> {
     return this.http.get<Booking>(`${this.bookingsUrl}/${encodeURIComponent(bookingId)}`);
   }
+
+  update(booking: Booking): Observable<Booking> {
+    return this.http.put<Booking>(`${this.bookingsUrl}/${encodeURIComponent(booking.id)}`, booking);
+  }
 }
