@@ -70,10 +70,9 @@ export class BookingService {
     return this.http.delete<void>(this.bookingsUrl + '/' + encodeURIComponent(bookingId));
   }
   updateStatus(bookingId: string, status: BookingStatus) {
-    return this.http.put<{ success: boolean; data?: Booking }>(
-      this.bookingsUrl + '/' + bookingId + '/status',
-      { status },
-    );
+    return this.http.patch<Booking>(`${this.bookingsUrl}/${encodeURIComponent(bookingId)}`, {
+      status,
+    });
   }
   create(payload: Booking): Observable<Booking> {
     return this.http.post<Booking>(this.bookingsUrl, payload);

@@ -19,8 +19,8 @@ export const authGuard: CanActivateFn = () => {
   }
 
   return authService.me().pipe(
-    map(() => {
-      authStore.setAuthenticated();
+    map((sessionUser) => {
+      authStore.setAuthenticated(sessionUser.data);
       return true;
     }),
     catchError(() => {

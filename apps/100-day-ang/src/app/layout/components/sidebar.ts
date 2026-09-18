@@ -1,4 +1,4 @@
-﻿import { Component, inject, signal } from '@angular/core';
+﻿import { Component, computed, inject, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   lucideBriefcaseBusiness,
@@ -18,6 +18,7 @@ import { toast } from 'ngx-sonner';
 import { MockAuthService } from '../../features/auth/services/mock-auth.service';
 import { AuthStore } from '../../features/auth/store/auth.store';
 import { SIDEBAR_NAV_GROUPS } from '../constants/sidebar-navigation';
+import { hasPermission } from '../../core/authorization/access-control';
 
 @Component({
   selector: 'app-sidebar',
@@ -42,7 +43,14 @@ export class Sidebar {
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
 
-  readonly navigationGroups = SIDEBAR_NAV_GROUPS;
+  readonly navigationGroups = computed(() => {
+    const role = this.authStore.user()?.role;
+
+    return SIDEBAR_NAV_GROUPS.map((group) => ({
+      ...group,
+      items: group.items.filter((item) => hasPermission(role, item.permission)),
+    })).filter((group) => group.items.length > 0);
+  });
   readonly isSigningOut = signal(false);
   readonly isCollapsed = signal(false);
   signOut(): void {

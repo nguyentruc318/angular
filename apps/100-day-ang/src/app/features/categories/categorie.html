@@ -1,20 +1,26 @@
-<section class="space-y-6 p-4 sm:p-6">
-  <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+﻿<section class="flex flex-col gap-6 p-6">
+  <div class="flex flex-wrap items-center justify-between gap-4">
     <div>
-      <p class="text-sm font-medium text-violet-600">Categories management</p>
-      <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Categories</h1>
-      <p class="mt-2 text-sm text-slate-500">Organize your salon services into clear categories.</p>
+      <h1 class="text-3xl font-bold text-slate-900">Categories</h1>
+      <p class="mt-1 text-slate-500">Organize your salon services into clear categories.</p>
     </div>
 
-    <a
-      routerLink="/categories/create"
-      class="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-violet-600 px-4 text-sm font-semibold text-white shadow-sm shadow-violet-200 transition hover:bg-violet-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
-    >
-      <ng-icon name="lucidePlus" class="size-4" aria-hidden="true" />
-      Create category
-    </a>
-  </div>
+    <div class="flex flex-wrap items-center gap-3">
+      @if (facade.pagination(); as pageInfo) {
+        <span class="rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
+          {{ pageInfo.total }} total categories
+        </span>
+      }
 
+      <a
+        routerLink="/categories/create"
+        class="inline-flex h-11 items-center gap-2 rounded-lg bg-violet-600 px-5 text-sm font-semibold text-white transition hover:bg-violet-700"
+      >
+        <ng-icon name="lucidePlus" class="size-4" aria-hidden="true" />
+        Create category
+      </a>
+    </div>
+  </div>
   <div class="space-y-4">
     <div class="flex flex-wrap items-end gap-4">
       <app-search-input

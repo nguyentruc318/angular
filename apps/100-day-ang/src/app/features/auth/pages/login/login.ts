@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MockAuthService } from '../../services/mock-auth.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { finalize } from 'rxjs';
+import { finalize, switchMap } from 'rxjs';
 import { toast } from 'ngx-sonner';
 import { AuthStore } from '../../store/auth.store';
 @Component({
@@ -48,10 +48,13 @@ export class Login {
 
     this.authService
       .login(this.loginForm.getRawValue())
-      .pipe(finalize(() => this.isSubmitting.set(false)))
+      .pipe(
+        switchMap(() => this.authService.me()),
+        finalize(() => this.isSubmitting.set(false)),
+      )
       .subscribe({
-        next: () => {
-          this.authStore.setAuthenticated();
+        next: (response) => {
+          this.authStore.setAuthenticated(response.data);
           this.router.navigateByUrl('/dashboard');
         },
         error: (error: HttpErrorResponse) => {

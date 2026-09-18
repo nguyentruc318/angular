@@ -5,13 +5,26 @@
       <p class="mt-1 text-slate-500">View and manage upcoming salon appointments.</p>
     </div>
 
-    @if (facade.pagination(); as pageInfo) {
-      <span class="rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
-        {{ pageInfo.total }} total bookings
-      </span>
-    }
+    <div class="flex flex-wrap items-center gap-3">
+      @if (facade.pagination(); as pageInfo) {
+        <span class="rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
+          {{ pageInfo.total }} total bookings
+        </span>
+      }
+
+      <button
+        type="button"
+        class="inline-flex h-11 items-center gap-2 rounded-lg bg-violet-600 px-5 text-sm font-semibold text-white transition hover:bg-violet-700"
+        (click)="facade.openCreate()"
+        *appHasPermission="'booking:create'"
+      >
+        <ng-icon name="lucidePlus" class="size-4" aria-hidden="true" />
+        Create booking
+      </button>
+    </div>
   </div>
-  <div class="flex flex-wrap items-center gap-4 justify-between">
+
+  <div class="flex flex-wrap items-end gap-4">
     <app-search-input
       class="w-full sm:w-80"
       id="booking-search"
@@ -20,13 +33,6 @@
       [value]="facade.search()"
       (valueChange)="facade.updateSearch($event)"
     />
-    <button
-      type="button"
-      class="h-12 rounded-lg bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
-      (click)="facade.openCreate()"
-    >
-      Create booking
-    </button>
   </div>
   <div class="flex flex-wrap items-center gap-4">
     <lib-shared-tabs
@@ -103,11 +109,15 @@
                       {{ facade.formatBookingStatus(booking.status) }}
                     </button>
 
-                    <mat-menu #statusMenu="matMenu">
+                    <mat-menu
+                      #statusMenu="matMenu"
+                      class="min-w-55! rounded-2xl! p-1.5! shadow-xl! [&_.mat-mdc-menu-item-text]:text-sm!"
+                    >
                       @for (status of facade.bookingStatusOptions; track status.value) {
                         <button
                           mat-menu-item
                           type="button"
+                          class="min-h-11! rounded-lg! px-3! text-sm! hover:bg-slate-100!"
                           (click)="facade.updateBookingStatus(booking, status.value)"
                         >
                           {{ status.label }}

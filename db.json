@@ -74,7 +74,7 @@
       "id": "booking-003",
       "bookingReference": "ATN-1003",
       "type": "nail-art",
-      "status": "checked_out",
+      "status": "confirmed",
       "startsAt": "2026-09-13T15:00:00.000Z",
       "timezone": "America/New_York",
       "customer": {
@@ -87,7 +87,7 @@
       "id": "booking-004",
       "bookingReference": "ATN-1004",
       "type": "gel-manicure",
-      "status": "confirmed",
+      "status": "pending_confirmation",
       "startsAt": "2026-09-15T09:00:00.000Z",
       "timezone": "America/New_York",
       "customer": {
@@ -100,7 +100,7 @@
       "id": "booking-005",
       "bookingReference": "ATN-1005",
       "type": "pedicure",
-      "status": "pending_confirmation",
+      "status": "confirmed",
       "startsAt": "2026-09-15T11:30:00.000Z",
       "timezone": "America/New_York",
       "customer": {
@@ -126,7 +126,7 @@
       "id": "booking-007",
       "bookingReference": "ATN-1007",
       "type": "gel-manicure",
-      "status": "checked_out",
+      "status": "confirmed",
       "startsAt": "2026-09-16T10:00:00.000Z",
       "timezone": "America/New_York",
       "customer": {
@@ -152,7 +152,7 @@
       "id": "booking-009",
       "bookingReference": "ATN-1009",
       "type": "gel-manicure",
-      "status": "pending_confirmation",
+      "status": "confirmed",
       "startsAt": "2026-09-17T09:30:00.000Z",
       "timezone": "America/New_York",
       "customer": {
@@ -165,7 +165,7 @@
       "id": "booking-010",
       "bookingReference": "ATN-1010",
       "type": "nail-art",
-      "status": "confirmed",
+      "status": "checked_out",
       "startsAt": "2026-09-17T15:00:00.000Z",
       "timezone": "America/New_York",
       "customer": {
@@ -178,7 +178,7 @@
       "id": "booking-011",
       "bookingReference": "ATN-1011",
       "type": "pedicure",
-      "status": "checked_out",
+      "status": "confirmed",
       "startsAt": "2026-09-18T12:00:00.000Z",
       "timezone": "America/New_York",
       "customer": {
@@ -220,7 +220,7 @@
       "bookingReference": "ATN-406731",
       "serviceId": "service-001",
       "staffId": "staff-002",
-      "status": "pending_confirmation",
+      "status": "confirmed",
       "createdAt": "2026-09-17T10:53:26.731Z",
       "startsAt": "2026-09-18T11:00:00.000Z",
       "timezone": "America/New_York",
@@ -481,6 +481,7 @@
       "name": "Demo Admin",
       "email": "admin@example.com",
       "password": "Demo123!",
+      "role": "admin",
       "isActive": true
     },
     {
@@ -488,7 +489,8 @@
       "name": "Disabled Demo",
       "email": "disabled@example.com",
       "password": "Demo123!",
-      "isActive": false
+      "role": "staff",
+      "isActive": true
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

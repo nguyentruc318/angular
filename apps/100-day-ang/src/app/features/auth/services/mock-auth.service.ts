@@ -47,7 +47,13 @@ export class MockAuthService {
         }
         return {
           success: true as const,
-          data: { id: user.id, name: user.name, email: user.email, isActive: user.isActive },
+          data: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            isActive: user.isActive,
+            role: user.role,
+          },
         };
       }),
       catchError((error: HttpErrorResponse) => {

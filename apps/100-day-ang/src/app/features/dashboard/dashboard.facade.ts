@@ -17,6 +17,7 @@ export class DashboardFacade {
   readonly popularServices = signal<PopularServicePoint[]>([]);
   readonly revenueTrend = signal<RevenuePoint[]>([]);
   readonly selectedRange = signal<RevenueRange>(14);
+
   readonly bookingStatus = signal<BookingStatusPoint[]>([]);
   readonly chartState = signal<DashboardChartState>('loading');
   readonly errorMessage = signal<string | null>(null);

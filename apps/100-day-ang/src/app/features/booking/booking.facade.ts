@@ -171,6 +171,7 @@ export class BookingFacade {
             search: this.search(),
             status: this.status() ?? undefined,
           });
+          toast.success('Booking status updated');
         },
       });
   }

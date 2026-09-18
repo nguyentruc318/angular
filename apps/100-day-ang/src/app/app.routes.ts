@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { permissionGuard } from './core/guards/permission.guard';
 
 export const routes: Routes = [
   {
@@ -13,18 +14,22 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
+        canActivate: [permissionGuard('dashboard:view')],
         loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
         path: 'bookings',
+        canActivate: [permissionGuard('booking:view')],
         loadComponent: () => import('./features/booking/booking').then((m) => m.Booking),
       },
       {
         path: 'customers',
+        canActivate: [permissionGuard('customer:view')],
         loadComponent: () => import('./features/customers/customers').then((m) => m.Customers),
       },
       {
         path: 'services',
+        canActivate: [permissionGuard('service:view')],
         children: [
           {
             path: '',
@@ -33,6 +38,7 @@ export const routes: Routes = [
           },
           {
             path: 'create',
+            canActivate: [permissionGuard('service:create')],
             loadComponent: () =>
               import('./features/services/page/create-service/create-service').then(
                 (m) => m.CreateService,
@@ -40,6 +46,7 @@ export const routes: Routes = [
           },
           {
             path: ':serviceId/edit',
+            canActivate: [permissionGuard('service:update')],
             loadComponent: () =>
               import('./features/services/page/edit-service/edit-service').then(
                 (m) => m.EditService,
@@ -49,6 +56,7 @@ export const routes: Routes = [
       },
       {
         path: 'categories',
+        canActivate: [permissionGuard('category:view')],
         children: [
           {
             path: '',
@@ -57,6 +65,7 @@ export const routes: Routes = [
           },
           {
             path: 'create',
+            canActivate: [permissionGuard('category:create')],
             loadComponent: () =>
               import('./features/categories/page/create-category/create-category').then(
                 (m) => m.CreateCategory,
@@ -64,6 +73,7 @@ export const routes: Routes = [
           },
           {
             path: ':categoryId/edit',
+            canActivate: [permissionGuard('category:update')],
             loadComponent: () =>
               import('./features/categories/page/edit-category/edit-category').then(
                 (m) => m.EditCategory,
@@ -73,6 +83,7 @@ export const routes: Routes = [
       },
       {
         path: 'staff',
+        canActivate: [permissionGuard('staff:view')],
         children: [
           {
             path: '',
@@ -81,11 +92,13 @@ export const routes: Routes = [
           },
           {
             path: 'create',
+            canActivate: [permissionGuard('staff:create')],
             loadComponent: () =>
               import('./features/staff/page/create-staff/create-staff').then((m) => m.CreateStaff),
           },
           {
             path: ':staffId/edit',
+            canActivate: [permissionGuard('staff:update')],
             loadComponent: () =>
               import('./features/staff/page/edit-staff/edit-staff').then((m) => m.EditStaff),
           },

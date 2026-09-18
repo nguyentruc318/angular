@@ -1,3 +1,5 @@
+import { UserRole } from './auth.model';
+
 /** Local demo data only. JSON Server does not protect these credentials. */
 export interface MockUser {
   id: string;
@@ -5,6 +7,7 @@ export interface MockUser {
   email: string;
   password: string;
   isActive: boolean;
+  role: UserRole;
 }
 
 export type MockSessionUser = Omit<MockUser, 'password'>;
