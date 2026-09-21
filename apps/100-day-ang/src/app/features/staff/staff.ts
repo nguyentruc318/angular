@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucidePencil, lucidePlus, lucideTrash2 } from '@ng-icons/lucide';
-import { Modal, TabsComponent } from 'shared';
+import { Modal } from 'shared';
 
 import { PaginationComponent } from '../../shared/components/pagination/pagination';
 import { SearchInputComponent } from '../../shared/components/search/search';
@@ -12,7 +12,7 @@ import { StaffFacade } from './staff.facade';
 @Component({
   selector: 'app-staff',
   templateUrl: './staff.html',
-  imports: [TabsComponent, PaginationComponent, SearchInputComponent, RouterLink, NgIcon, Modal],
+  imports: [PaginationComponent, SearchInputComponent, RouterLink, NgIcon, Modal],
   providers: [StaffFacade, provideIcons({ lucidePlus, lucidePencil, lucideTrash2 })],
 })
 export class Staff implements OnInit {

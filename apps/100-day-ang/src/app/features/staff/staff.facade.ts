@@ -14,7 +14,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import type { TabOption } from 'shared';
 
 import { QueryParamsService } from '../../core/services/query-params.service';
 import type {
@@ -44,11 +43,6 @@ export class StaffFacade {
   readonly search = computed(() => this.listParams().search ?? '');
   readonly status = computed(() => this.listParams().status ?? null);
   readonly hasFilters = computed(() => Boolean(this.search().trim() || this.status()));
-  readonly statusTabs: readonly TabOption[] = [
-    { value: '', label: 'All statuses' },
-    { value: 'active', label: 'Active' },
-    { value: 'inactive', label: 'Inactive' },
-  ];
   readonly firstItem = computed(() => {
     const page = this.pagination();
     return page && page.total > 0 ? (page.page - 1) * page.limit + 1 : 0;

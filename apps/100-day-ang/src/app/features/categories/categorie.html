@@ -1,4 +1,4 @@
-﻿<section class="flex flex-col gap-6 p-6">
+<section class="flex flex-col gap-6 p-6">
   <div class="flex flex-wrap items-center justify-between gap-4">
     <div>
       <h1 class="text-3xl font-bold text-slate-900">Categories</h1>
@@ -67,19 +67,6 @@
       </div>
     </div>
 
-    <lib-shared-tabs
-      [tabs]="statusTabs"
-      [value]="
-        facade.listParams().isActive === undefined
-          ? ''
-          : facade.listParams().isActive
-            ? 'true'
-            : 'false'
-      "
-      (valueChange)="facade.updateActivity($event)"
-      tabClass="bg-white border-b border-slate-200 px-2 rounded-lg"
-      buttonClass="rounded-none"
-    />
   </div>
 
   @if (facade.isLoading()) {

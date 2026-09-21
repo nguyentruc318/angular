@@ -2,7 +2,7 @@
   <button
     #filterButton
     type="button"
-    class="flex items-center gap-2 rounded-lg border px-4 py-2 border-none bg-white"
+    class="flex items-center gap-2 rounded-lg border h-11 px-4 py-2 w-60 border-none bg-white"
     (click)="toggleMenu()"
   >
     <span>
@@ -13,15 +13,7 @@
   </button>
 
   @if (isMenuOpen()) {
-    <div class="absolute left-0 top-full z-20 mt-2 w-60 rounded-lg bg-white p-1 shadow-lg">
-      <button
-        type="button"
-        class="block w-full rounded px-3 py-2 text-left hover:bg-gray-100"
-        (click)="selectToday()"
-      >
-        Today
-      </button>
-
+    <div class="absolute left-0 top-full z-20 h-11 mt-2 w-60 rounded-lg bg-white p-1 shadow-lg">
       <button
         type="button"
         class="block w-full rounded px-3 py-2 text-left hover:bg-gray-100"
@@ -32,9 +24,8 @@
     </div>
   }
 
-  <!-- Keep the input mounted as the calendar anchor without displaying a form field. -->
   <mat-date-range-input
-    class="pointer-events-none absolute inset-0 opacity-0"
+    class="pointer-events-none absolute top-2 opacity-0"
     aria-hidden="true"
     [rangePicker]="picker"
   >
@@ -42,14 +33,14 @@
       matStartDate
       tabindex="-1"
       [ngModel]="startDate()"
-      (ngModelChange)="onStartDateChange($event)"
+      (dateChange)="onStartDateChange($event.value)"
     />
 
     <input
       matEndDate
       tabindex="-1"
       [ngModel]="endDate()"
-      (ngModelChange)="onEndDateChange($event)"
+      (dateChange)="onEndDateChange($event.value)"
     />
   </mat-date-range-input>
 

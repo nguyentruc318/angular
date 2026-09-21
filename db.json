@@ -48,7 +48,7 @@
       "id": "booking-001",
       "bookingReference": "ATN-1001",
       "type": "gel-manicure",
-      "status": "pending_confirmation",
+      "status": "checked_out",
       "startsAt": "2026-09-14T10:00:00.000Z",
       "timezone": "America/New_York",
       "customer": {

@@ -3,11 +3,12 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { map, Observable } from 'rxjs';
 
-import type {
-  Booking,
-  BookingListParams,
-  BookingListResponse,
-  BookingStatus,
+import {
+  DEFAULT_BOOKING_SORT,
+  type Booking,
+  type BookingListParams,
+  type BookingListResponse,
+  type BookingStatus,
 } from '../models/booking.model';
 
 @Injectable({ providedIn: 'root' })
@@ -21,9 +22,10 @@ export class BookingService {
     search,
     from,
     to,
-    status,
+    statuses,
+    sort = DEFAULT_BOOKING_SORT,
   }: BookingListParams = {}): Observable<BookingListResponse> {
-    const httpParams = new HttpParams().set('_sort', '-createdAt');
+    const httpParams = new HttpParams().set('_sort', sort);
 
     return this.http.get<Booking[]>(this.bookingsUrl, { params: httpParams }).pipe(
       map((bookings) => {
@@ -43,7 +45,7 @@ export class BookingService {
             (!normalizedSearch || searchableText.includes(normalizedSearch)) &&
             (!from || bookingDate >= from) &&
             (!to || bookingDate <= to) &&
-            (!status || booking.status === status)
+            (!statuses?.length || statuses.includes(booking.status))
           );
         });
 

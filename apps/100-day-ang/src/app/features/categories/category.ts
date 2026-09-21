@@ -7,11 +7,11 @@ import { CategoryFacade } from './category.facade';
 import { SearchInputComponent } from '../../shared/components/search/search';
 import { SelectComponent, SelectOption } from '../../shared/components/select/select';
 import { CategoryWithServices } from './models/category.model';
-import { Modal, TabOption, TabsComponent } from 'shared';
+import { Modal } from 'shared';
 
 @Component({
   selector: 'app-categories',
-  imports: [SearchInputComponent, SelectComponent, RouterLink, NgIcon, Modal, TabsComponent],
+  imports: [SearchInputComponent, SelectComponent, RouterLink, NgIcon, Modal],
   providers: [
     CategoryFacade,
     provideIcons({ lucidePlus, lucidePencil, lucideTrash2, lucideSlidersHorizontal }),
@@ -21,11 +21,6 @@ import { Modal, TabOption, TabsComponent } from 'shared';
 export class Categories {
   readonly facade = inject(CategoryFacade);
 
-  readonly statusTabs: readonly TabOption[] = [
-    { value: '', label: 'All categories' },
-    { value: 'true', label: 'Active' },
-    { value: 'false', label: 'Hidden' },
-  ] as const;
   readonly isDeleteModalOpen = signal(false);
   readonly categoryToDelete = signal<CategoryWithServices | null>(null);
   readonly isFilterOpen = signal(false);

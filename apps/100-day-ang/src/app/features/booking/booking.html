@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <div class="flex flex-wrap items-end gap-4">
+  <div class="flex flex-wrap items-end gap-3">
     <app-search-input
       class="w-full sm:w-80"
       id="booking-search"
@@ -33,24 +33,133 @@
       [value]="facade.search()"
       (valueChange)="facade.updateSearch($event)"
     />
-  </div>
-  <div class="flex flex-wrap items-center gap-4">
-    <lib-shared-tabs
-      [tabs]="facade.statusTabs"
-      [value]="facade.status() ?? ''"
-      (valueChange)="facade.updateStatusFilter($event)"
-      tabClass="bg-white border-b border-slate-200 px-2 rounded-lg"
-      buttonClass="rounded-none"
-    />
+
+    <button
+      #statusFilterTrigger="matMenuTrigger"
+      type="button"
+      [matMenuTriggerFor]="statusFilterMenu"
+      (menuOpened)="syncDraftStatuses()"
+      class="relative inline-flex size-11 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100 hover:text-violet-700"
+      aria-label="Filter booking statuses"
+    >
+      <ng-icon name="lucideFilter" class="size-4" aria-hidden="true" />
+    </button>
+
+    <mat-menu #statusFilterMenu="matMenu" class="min-w-72!">
+      <div class="p-4" (click)="$event.stopPropagation()">
+        <p class="mb-3 text-sm font-semibold text-slate-900">Booking status</p>
+
+        <div class="flex flex-col gap-2">
+          @for (status of bookingStatuses; track status) {
+            <mat-checkbox
+              [checked]="draftStatuses().includes(status)"
+              (change)="toggleStatus(status, $event.checked)"
+            >
+              {{ facade.formatBookingStatus(status) }}
+            </mat-checkbox>
+          }
+        </div>
+
+        <div class="mt-4 flex justify-end gap-2 border-t border-slate-200 pt-3">
+          <button
+            type="button"
+            class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+            (click)="clearDraftStatuses()"
+          >
+            Clear
+          </button>
+
+          <button
+            type="button"
+            class="rounded-lg bg-violet-600 px-3 py-2 text-sm font-semibold text-white hover:bg-violet-700"
+            (click)="applyStatusFilters(statusFilterTrigger)"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+    </mat-menu>
+    <button
+      type="button"
+      [matMenuTriggerFor]="sortMenu"
+      class="inline-flex size-11 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-violet-700"
+      aria-label="Sort bookings"
+    >
+      <ng-icon name="lucideArrowUpDown" class="size-4" />
+    </button>
     <lib-shared-date-filter (rangeChange)="facade.updateDateFilter($event)" #dateFilter />
     <button
       type="button"
-      class="rounded-lg h-10 bg-white px-4 py-2 text-sm text-slate-600 hover:bg-slate-100"
+      class="rounded-lg h-11 bg-white px-4 py-2 text-sm text-slate-600 hover:bg-slate-100"
       (click)="facade.clearFilters(); dateFilter.reset()"
     >
       Clear filters
     </button>
+    <mat-menu #sortMenu="matMenu" class="!min-w-72 !rounded-xl !p-1.5 !shadow-xl">
+      <button
+        mat-menu-item
+        type="button"
+        class="!min-h-11 !rounded-lg !px-3 hover:!bg-slate-100"
+        [class.bg-violet-50]="facade.sort() === 'startsAt'"
+        [class.text-violet-700]="facade.sort() === 'startsAt'"
+        (click)="facade.updateSort('startsAt')"
+      >
+        Appointment: soonest first
+
+        @if (facade.sort() === 'startsAt') {
+          <span class="ml-auto font-bold">✓</span>
+        }
+      </button>
+
+      <button
+        mat-menu-item
+        type="button"
+        class="!min-h-11 !rounded-lg !px-3 hover:!bg-slate-100"
+        [class.bg-violet-50]="facade.sort() === '-startsAt'"
+        [class.text-violet-700]="facade.sort() === '-startsAt'"
+        (click)="facade.updateSort('-startsAt')"
+      >
+        Appointment: latest first
+
+        @if (facade.sort() === '-startsAt') {
+          <span class="ml-auto font-bold">✓</span>
+        }
+      </button>
+
+      <div class="my-1 border-t border-slate-100"></div>
+
+      <button
+        mat-menu-item
+        type="button"
+        class="!min-h-11 !rounded-lg !px-3 hover:!bg-slate-100"
+        [class.bg-violet-50]="facade.sort() === '-createdAt'"
+        [class.text-violet-700]="facade.sort() === '-createdAt'"
+        (click)="facade.updateSort('-createdAt')"
+      >
+        Created: newest first
+
+        @if (facade.sort() === '-createdAt') {
+          <span class="ml-auto font-bold">✓</span>
+        }
+      </button>
+
+      <button
+        mat-menu-item
+        type="button"
+        class="!min-h-11 !rounded-lg !px-3 hover:!bg-slate-100"
+        [class.bg-violet-50]="facade.sort() === 'createdAt'"
+        [class.text-violet-700]="facade.sort() === 'createdAt'"
+        (click)="facade.updateSort('createdAt')"
+      >
+        Created: oldest first
+
+        @if (facade.sort() === 'createdAt') {
+          <span class="ml-auto font-bold">✓</span>
+        }
+      </button>
+    </mat-menu>
   </div>
+
   @if (facade.errorMessage(); as message) {
     <div class="rounded-xl bg-white p-6 text-red-600 shadow">
       {{ message }}
@@ -113,14 +222,14 @@
                       #statusMenu="matMenu"
                       class="min-w-55! rounded-2xl! p-1.5! shadow-xl! [&_.mat-mdc-menu-item-text]:text-sm!"
                     >
-                      @for (status of facade.bookingStatusOptions; track status.value) {
+                      @for (status of bookingStatuses; track status) {
                         <button
                           mat-menu-item
                           type="button"
                           class="min-h-11! rounded-lg! px-3! text-sm! hover:bg-slate-100!"
-                          (click)="facade.updateBookingStatus(booking, status.value)"
+                          (click)="facade.updateBookingStatus(booking, status)"
                         >
-                          {{ status.label }}
+                          {{ facade.formatBookingStatus(status) }}
                         </button>
                       }
                     </mat-menu>

@@ -34,7 +34,8 @@ export interface BookingListParams {
   search?: string;
   from?: string;
   to?: string;
-  status?: BookingStatus;
+  statuses?: BookingStatus[];
+  sort?: BookingSort;
 }
 
 export interface BookingListResponse {
@@ -55,3 +56,13 @@ export interface BookingFormValue {
 export type BookingFormInitialValue = Omit<BookingFormValue, 'date'> & {
   date: Date | null;
 };
+export const BOOKING_SORTS = [
+  'startsAt',
+  '-startsAt',
+  '-createdAt',
+  'createdAt',
+] as const;
+
+export type BookingSort = (typeof BOOKING_SORTS)[number];
+
+export const DEFAULT_BOOKING_SORT: BookingSort = 'startsAt';

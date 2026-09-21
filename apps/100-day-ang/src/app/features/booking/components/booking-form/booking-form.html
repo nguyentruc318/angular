@@ -18,15 +18,17 @@
             formControlName="customerName"
             class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
             [class.border-red-500]="
-              form.controls.customerName.touched && form.controls.customerName.invalid
+              form.controls.customerName.invalid && (form.controls.customerName.touched || form.controls.customerName.dirty)
             "
             [attr.aria-invalid]="
-              form.controls.customerName.touched && form.controls.customerName.invalid
+              form.controls.customerName.invalid && (form.controls.customerName.touched || form.controls.customerName.dirty)
             "
           />
-          @if (form.controls.customerName.touched && form.controls.customerName.invalid) {
-            <p class="mt-1.5 text-xs text-red-600">Enter the customer's name.</p>
-          }
+          <lib-shared-form-error
+            [show]="form.controls.customerName.touched || form.controls.customerName.dirty"
+            [errors]="form.controls.customerName.errors"
+            [messages]="errors.customerName"
+          />
         </div>
 
         <div>
@@ -40,14 +42,10 @@
             placeholder="0912345678"
             formControlName="phone"
             class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-            [class.border-red-500]="form.controls.phone.touched && form.controls.phone.invalid"
-            [attr.aria-invalid]="form.controls.phone.touched && form.controls.phone.invalid"
+            [class.border-red-500]="form.controls.phone.invalid && (form.controls.phone.touched || form.controls.phone.dirty)"
+            [attr.aria-invalid]="form.controls.phone.invalid && (form.controls.phone.touched || form.controls.phone.dirty)"
           />
-          @if (form.controls.phone.touched && form.controls.phone.invalid) {
-            <p class="mt-1.5 text-xs text-red-600">
-              Enter a valid Vietnamese mobile number, for example 0912345678.
-            </p>
-          }
+          <lib-shared-form-error [show]="form.controls.phone.touched || form.controls.phone.dirty" [errors]="form.controls.phone.errors" [messages]="errors.phone" />
         </div>
 
         <div>
@@ -61,12 +59,10 @@
             placeholder="name@example.com"
             formControlName="email"
             class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-            [class.border-red-500]="form.controls.email.touched && form.controls.email.invalid"
-            [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+            [class.border-red-500]="form.controls.email.invalid && (form.controls.email.touched || form.controls.email.dirty)"
+            [attr.aria-invalid]="form.controls.email.invalid && (form.controls.email.touched || form.controls.email.dirty)"
           />
-          @if (form.controls.email.touched && form.controls.email.invalid) {
-            <p class="mt-1.5 text-xs text-red-600">Enter a valid email address.</p>
-          }
+          <lib-shared-form-error [show]="form.controls.email.touched || form.controls.email.dirty" [errors]="form.controls.email.errors" [messages]="errors.email" />
         </div>
       </div>
     </section>
@@ -89,9 +85,7 @@
             [disabled]="isSubmitting()"
             (valueChange)="onServiceChange($event)"
           />
-          @if (form.controls.serviceId.touched && form.controls.serviceId.invalid) {
-            <p class="mt-1.5 text-xs text-red-600">Choose a service.</p>
-          }
+          <lib-shared-form-error [show]="form.controls.serviceId.touched || form.controls.serviceId.dirty" [errors]="form.controls.serviceId.errors" [messages]="errors.serviceId" />
         </div>
 
         <div class="grid gap-5 sm:grid-cols-2">
@@ -108,7 +102,7 @@
                 [matDatepicker]="bookingDatePicker"
                 formControlName="date"
                 class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 pr-11 text-sm text-slate-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-                [class.border-red-500]="form.controls.date.touched && form.controls.date.invalid"
+                [class.border-red-500]="form.controls.date.invalid && (form.controls.date.touched || form.controls.date.dirty)"
               />
 
               <button
@@ -122,9 +116,7 @@
 
               <mat-datepicker #bookingDatePicker />
             </div>
-            @if (form.controls.date.touched && form.controls.date.invalid) {
-              <p class="mt-1.5 text-xs text-red-600">Choose a date.</p>
-            }
+            <lib-shared-form-error [show]="form.controls.date.touched || form.controls.date.dirty" [errors]="form.controls.date.errors" [messages]="errors.date" />
           </div>
 
           <div>
@@ -136,11 +128,9 @@
               type="time"
               formControlName="time"
               class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-              [class.border-red-500]="form.controls.time.touched && form.controls.time.invalid"
+              [class.border-red-500]="form.controls.time.invalid && (form.controls.time.touched || form.controls.time.dirty)"
             />
-            @if (form.controls.time.touched && form.controls.time.invalid) {
-              <p class="mt-1.5 text-xs text-red-600">Choose a time.</p>
-            }
+            <lib-shared-form-error [show]="form.controls.time.touched || form.controls.time.dirty" [errors]="form.controls.time.errors" [messages]="errors.time" />
           </div>
         </div>
 
@@ -155,9 +145,7 @@
             [disabled]="isSubmitting()"
             (valueChange)="onStaffChange($event)"
           />
-          @if (form.controls.staffId.touched && form.controls.staffId.invalid) {
-            <p class="mt-1.5 text-xs text-red-600">Choose a staff member.</p>
-          }
+          <lib-shared-form-error [show]="form.controls.staffId.touched || form.controls.staffId.dirty" [errors]="form.controls.staffId.errors" [messages]="errors.staffId" />
         </div>
       </div>
     </section>

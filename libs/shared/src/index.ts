@@ -6,3 +6,5 @@ export * from './lib/components/date-picker/date-picker';
 export * from './lib/components/date-filter/date-filter';
 export * from './lib/components/sheet-dialog/sheet';
 export * from './lib/shared/validator/not-past-date.validator';
+export * from './lib/utils/parse';
+export * from './lib/components/form-error/form-error';

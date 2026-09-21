@@ -8,17 +8,50 @@ import { lucideCalendarDays } from '@ng-icons/lucide';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-
+import { FormErrorComponent } from 'shared';
 import { notPastDate } from 'shared';
 @Component({
   selector: 'app-booking-form',
   templateUrl: './booking-form.html',
-  imports: [ReactiveFormsModule, NgIcon, SelectComponent, MatDatepickerModule, MatInputModule],
+  imports: [
+    ReactiveFormsModule,
+    FormErrorComponent,
+    NgIcon,
+    SelectComponent,
+    MatDatepickerModule,
+    MatInputModule,
+  ],
   providers: [provideNativeDateAdapter(), provideIcons({ lucideCalendarDays })],
 })
 export class BookingForm {
   private readonly formBuilder = inject(FormBuilder);
-
+  readonly errors = {
+    customerName: {
+      required: 'Customer name is required.',
+      maxlength: 'Customer name must not exceed 120 characters.',
+    },
+    phone: {
+      required: 'Phone number is required.',
+      pattern: 'Enter a valid Vietnamese mobile number, for example 0912345678.',
+    },
+    email: {
+      required: 'Email address is required.',
+      email: 'Enter a valid email address.',
+    },
+    date: {
+      required: 'Choose a booking date.',
+      pastDate: 'Booking date cannot be in the past.',
+    },
+    serviceId: {
+      required: 'Choose a service.',
+    },
+    time: {
+      required: 'Choose a time.',
+    },
+    staffId: {
+      required: 'Choose a staff member.',
+    },
+  } as const;
   readonly serviceOptions = input<readonly SelectOption[]>([]);
   readonly staffOptions = input<readonly SelectOption[]>([]);
   readonly isSubmitting = input(false);

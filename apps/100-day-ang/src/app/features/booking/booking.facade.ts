@@ -12,16 +12,20 @@ import { forkJoin } from 'rxjs';
 
 import {
   BOOKING_STATUSES,
+  BOOKING_SORTS,
   Booking,
   BookingListParams,
   BookingPagination,
   BookingStatus,
   BookingFormValue,
   BookingFormInitialValue,
+  DEFAULT_BOOKING_SORT,
+  BookingSort,
 } from './models/booking.model';
 import { BookingService } from './services/booking.service';
-import { TabOption } from 'shared';
 import { toast } from 'ngx-sonner';
+import { parseDelimitedQueryParam } from 'shared';
+
 @Injectable()
 export class BookingFacade {
   private readonly bookingService = inject(BookingService);
@@ -40,7 +44,7 @@ export class BookingFacade {
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
   readonly search = signal('');
-  readonly status = signal<BookingStatus | null>(null);
+  readonly statuses = signal<BookingStatus[]>([]);
   readonly updatingBookingId = signal<string | null>(null);
   readonly deletingBookingId = signal<string | null>(null);
   readonly isBookingFormOpen = signal(false);
@@ -54,18 +58,14 @@ export class BookingFacade {
     return booking ? this.toFormInitialValue(booking) : null;
   });
   readonly staffOptions = signal<SelectOption[]>([]);
-  readonly statusTabs: readonly TabOption[] = [
-    { value: '', label: 'All statuses' },
-    ...BOOKING_STATUSES.map((status) => ({
-      value: status,
-      label: formatLabel(status),
-    })),
-  ];
-  readonly bookingStatusOptions: SelectOption[] = BOOKING_STATUSES.map((status) => ({
-    value: status,
-    label: formatLabel(status),
-  }));
+  readonly sort = signal<BookingSort>(DEFAULT_BOOKING_SORT);
 
+  updateSort(sort: BookingSort): void {
+    void this.queryParams.merge(this.route, {
+      page: 1,
+      sort: sort === DEFAULT_BOOKING_SORT ? null : sort,
+    });
+  }
   init(): void {
     this.listenToQueryParams();
     this.listenToSearch();
@@ -127,10 +127,12 @@ export class BookingFacade {
     this.isBookingFormOpen.set(false);
     this.editingBooking.set(null);
   }
-  updateStatusFilter(value: string): void {
+  updateStatusFilter(statuses: BookingStatus[]): void {
+    const selectedStatuses = [...new Set(statuses)];
+
     void this.queryParams.merge(this.route, {
       page: 1,
-      status: value || null,
+      statuses: selectedStatuses.length ? selectedStatuses.join(',') : null,
     });
   }
 
@@ -169,7 +171,10 @@ export class BookingFacade {
           this.loadBookings({
             page: this.pagination()?.page ?? 1,
             search: this.search(),
-            status: this.status() ?? undefined,
+            statuses: this.statuses(),
+            from: this.fromDate() ?? undefined,
+            to: this.toDate() ?? undefined,
+            sort: this.sort(),
           });
           toast.success('Booking status updated');
         },
@@ -192,9 +197,10 @@ export class BookingFacade {
           this.loadBookings({
             page: this.pagination()?.page ?? 1,
             search: this.search(),
-            status: this.status() ?? undefined,
+            statuses: this.statuses(),
             from: this.fromDate() ?? undefined,
             to: this.toDate() ?? undefined,
+            sort: this.sort(),
           });
         },
         error: (error: HttpErrorResponse) => {
@@ -206,17 +212,22 @@ export class BookingFacade {
     this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
       const page = Number(params.get('page')) || 1;
       const search = params.get('search') ?? '';
-      const status = params.get('status') as BookingStatus | null;
+      const statuses = parseDelimitedQueryParam(params.get('statuses'), BOOKING_STATUSES);
+      const sort =
+        BOOKING_SORTS.find((item) => item === params.get('sort')) ?? DEFAULT_BOOKING_SORT;
+
       const from = params.get('from');
       const to = params.get('to');
       this.search.set(search);
-      this.status.set(status);
+      this.statuses.set(statuses);
+      this.sort.set(sort);
       this.fromDate.set(from);
       this.toDate.set(to);
       this.loadBookings({
         page,
         search,
-        status: status ?? undefined,
+        statuses,
+        sort,
         from: from ?? undefined,
         to: to ?? undefined,
       });
@@ -230,7 +241,6 @@ export class BookingFacade {
         void this.queryParams.merge(this.route, {
           page: 1,
           search: search || null,
-          status: this.status(),
         });
       });
   }
@@ -273,7 +283,7 @@ export class BookingFacade {
 
     void this.queryParams.merge(this.route, {
       search: null,
-      status: null,
+      statuses: null,
       from: null,
       to: null,
       page: 1,
@@ -321,9 +331,10 @@ export class BookingFacade {
           this.loadBookings({
             page: this.pagination()?.page ?? 1,
             search: this.search(),
-            status: this.status() ?? undefined,
+            statuses: this.statuses(),
             from: this.fromDate() ?? undefined,
             to: this.toDate() ?? undefined,
+            sort: this.sort(),
           });
         },
         error: (error: HttpErrorResponse) => {
@@ -379,9 +390,10 @@ export class BookingFacade {
           this.loadBookings({
             page: this.pagination()?.page ?? 1,
             search: this.search(),
-            status: this.status() ?? undefined,
+            statuses: this.statuses(),
             from: this.fromDate() ?? undefined,
             to: this.toDate() ?? undefined,
+            sort: this.sort(),
           });
         },
         error: (error: HttpErrorResponse) => {
