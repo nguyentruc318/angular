@@ -1,0 +1,38 @@
+<fieldset [formGroup]="group()" class="space-y-5">
+  <legend class="text-lg font-semibold text-slate-900">Basic information</legend>
+
+  <label class="block">
+    <span class="mb-1.5 block text-sm font-medium text-slate-700">Full name</span>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100" formControlName="name" placeholder="Jane Doe" />
+    <lib-shared-form-error [show]="group().controls['name'].touched || group().controls['name'].dirty" [errors]="group().controls['name'].errors" [messages]="errors.name" />
+  </label>
+
+  <label class="block">
+    <span class="mb-1.5 block text-sm font-medium text-slate-700">Email address</span>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100" type="email" formControlName="email" placeholder="jane@example.com" />
+    <lib-shared-form-error [show]="group().controls['email'].touched || group().controls['email'].dirty" [errors]="group().controls['email'].errors" [messages]="errors.email" />
+  </label>
+
+  <label class="block">
+    <span class="mb-1.5 block text-sm font-medium text-slate-700">Phone number</span>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100" type="tel" formControlName="phone" placeholder="0901234567" />
+    <lib-shared-form-error [show]="group().controls['phone'].touched || group().controls['phone'].dirty" [errors]="group().controls['phone'].errors" [messages]="errors.phone" />
+  </label>
+
+  <label class="block">
+    <span class="mb-1.5 block text-sm font-medium text-slate-700">Date of birth</span>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100" type="date" formControlName="dob" />
+    <lib-shared-form-error [show]="group().controls['dob'].touched || group().controls['dob'].dirty" [errors]="group().controls['dob'].errors" [messages]="errors.dob" />
+  </label>
+
+  <label class="block">
+    <span class="mb-1.5 block text-sm font-medium text-slate-700">Gender</span>
+    <select class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100" formControlName="gender">
+      <option [ngValue]="null">Select gender</option>
+      <option value="female">Female</option>
+      <option value="male">Male</option>
+      <option value="other">Other</option>
+    </select>
+    <lib-shared-form-error [show]="group().controls['gender'].touched || group().controls['gender'].dirty" [errors]="group().controls['gender'].errors" [messages]="errors.gender" />
+  </label>
+</fieldset>

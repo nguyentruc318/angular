@@ -105,6 +105,11 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'form-wizard',
+        loadComponent: () =>
+          import('./features/form-wizard/form-wizard').then((m) => m.FormWizard),
+      },
+      {
         path: '',
         pathMatch: 'full',
         redirectTo: 'dashboard',

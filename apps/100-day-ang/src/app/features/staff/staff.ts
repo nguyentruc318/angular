@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucidePencil, lucidePlus, lucideTrash2 } from '@ng-icons/lucide';
 import { Modal } from 'shared';
-
+import { StaffComponent } from './components/staff-row/staff-row';
 import { PaginationComponent } from '../../shared/components/pagination/pagination';
 import { SearchInputComponent } from '../../shared/components/search/search';
 import type { StaffMember } from './models/staff.model';
@@ -12,7 +12,7 @@ import { StaffFacade } from './staff.facade';
 @Component({
   selector: 'app-staff',
   templateUrl: './staff.html',
-  imports: [PaginationComponent, SearchInputComponent, RouterLink, NgIcon, Modal],
+  imports: [PaginationComponent, SearchInputComponent, RouterLink, NgIcon, Modal, StaffComponent],
   providers: [StaffFacade, provideIcons({ lucidePlus, lucidePencil, lucideTrash2 })],
 })
 export class Staff implements OnInit {

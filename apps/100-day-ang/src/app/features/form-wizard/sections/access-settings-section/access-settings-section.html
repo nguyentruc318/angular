@@ -1,0 +1,14 @@
+<fieldset [formGroup]="group()" class="space-y-5">
+  <legend class="text-lg font-semibold text-slate-900">Access settings</legend>
+  <label class="block">
+    <span class="mb-1.5 block text-sm font-medium text-slate-700">Initial status</span>
+    <select class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100" formControlName="status"><option value="active">Active</option><option value="inactive">Inactive</option></select>
+    <lib-shared-form-error [show]="group().controls['status'].touched || group().controls['status'].dirty" [errors]="group().controls['status'].errors" [messages]="errors.status" />
+  </label>
+  <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-slate-200 p-4"><input class="size-4 accent-violet-600" type="checkbox" formControlName="sendInvite" /><span><span class="block text-sm font-medium text-slate-800">Send an invite email</span><span class="block text-xs text-slate-500">Notify the user after their account is created.</span></span></label>
+  <label class="block">
+    <span class="mb-1.5 block text-sm font-medium text-slate-700">Notes</span>
+    <textarea class="min-h-28 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100" formControlName="notes" maxlength="500" placeholder="Optional notes"></textarea>
+    <lib-shared-form-error [show]="group().controls['notes'].touched || group().controls['notes'].dirty" [errors]="group().controls['notes'].errors" [messages]="errors.notes" />
+  </label>
+</fieldset>

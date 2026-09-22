@@ -18,10 +18,12 @@
             formControlName="customerName"
             class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
             [class.border-red-500]="
-              form.controls.customerName.invalid && (form.controls.customerName.touched || form.controls.customerName.dirty)
+              form.controls.customerName.invalid &&
+              (form.controls.customerName.touched || form.controls.customerName.dirty)
             "
             [attr.aria-invalid]="
-              form.controls.customerName.invalid && (form.controls.customerName.touched || form.controls.customerName.dirty)
+              form.controls.customerName.invalid &&
+              (form.controls.customerName.touched || form.controls.customerName.dirty)
             "
           />
           <lib-shared-form-error
@@ -42,10 +44,20 @@
             placeholder="0912345678"
             formControlName="phone"
             class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-            [class.border-red-500]="form.controls.phone.invalid && (form.controls.phone.touched || form.controls.phone.dirty)"
-            [attr.aria-invalid]="form.controls.phone.invalid && (form.controls.phone.touched || form.controls.phone.dirty)"
+            [class.border-red-500]="
+              form.controls.phone.invalid &&
+              (form.controls.phone.touched || form.controls.phone.dirty)
+            "
+            [attr.aria-invalid]="
+              form.controls.phone.invalid &&
+              (form.controls.phone.touched || form.controls.phone.dirty)
+            "
           />
-          <lib-shared-form-error [show]="form.controls.phone.touched || form.controls.phone.dirty" [errors]="form.controls.phone.errors" [messages]="errors.phone" />
+          <lib-shared-form-error
+            [show]="form.controls.phone.touched || form.controls.phone.dirty"
+            [errors]="form.controls.phone.errors"
+            [messages]="errors.phone"
+          />
         </div>
 
         <div>
@@ -59,10 +71,20 @@
             placeholder="name@example.com"
             formControlName="email"
             class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-            [class.border-red-500]="form.controls.email.invalid && (form.controls.email.touched || form.controls.email.dirty)"
-            [attr.aria-invalid]="form.controls.email.invalid && (form.controls.email.touched || form.controls.email.dirty)"
+            [class.border-red-500]="
+              form.controls.email.invalid &&
+              (form.controls.email.touched || form.controls.email.dirty)
+            "
+            [attr.aria-invalid]="
+              form.controls.email.invalid &&
+              (form.controls.email.touched || form.controls.email.dirty)
+            "
           />
-          <lib-shared-form-error [show]="form.controls.email.touched || form.controls.email.dirty" [errors]="form.controls.email.errors" [messages]="errors.email" />
+          <lib-shared-form-error
+            [show]="form.controls.email.touched || form.controls.email.dirty"
+            [errors]="form.controls.email.errors"
+            [messages]="errors.email"
+          />
         </div>
       </div>
     </section>
@@ -85,7 +107,11 @@
             [disabled]="isSubmitting()"
             (valueChange)="onServiceChange($event)"
           />
-          <lib-shared-form-error [show]="form.controls.serviceId.touched || form.controls.serviceId.dirty" [errors]="form.controls.serviceId.errors" [messages]="errors.serviceId" />
+          <lib-shared-form-error
+            [sho  w]="form.controls.serviceId.touched || form.controls.serviceId.dirty"
+            [errors]="form.controls.serviceId.errors"
+            [messages]="errors.serviceId"
+          />
         </div>
 
         <div class="grid gap-5 sm:grid-cols-2">
@@ -102,7 +128,10 @@
                 [matDatepicker]="bookingDatePicker"
                 formControlName="date"
                 class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 pr-11 text-sm text-slate-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-                [class.border-red-500]="form.controls.date.invalid && (form.controls.date.touched || form.controls.date.dirty)"
+                [class.border-red-500]="
+                  form.controls.date.invalid &&
+                  (form.controls.date.touched || form.controls.date.dirty)
+                "
               />
 
               <button
@@ -116,7 +145,11 @@
 
               <mat-datepicker #bookingDatePicker />
             </div>
-            <lib-shared-form-error [show]="form.controls.date.touched || form.controls.date.dirty" [errors]="form.controls.date.errors" [messages]="errors.date" />
+            <lib-shared-form-error
+              [show]="form.controls.date.touched || form.controls.date.dirty"
+              [errors]="form.controls.date.errors"
+              [messages]="errors.date"
+            />
           </div>
 
           <div>
@@ -128,9 +161,16 @@
               type="time"
               formControlName="time"
               class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-              [class.border-red-500]="form.controls.time.invalid && (form.controls.time.touched || form.controls.time.dirty)"
+              [class.border-red-500]="
+                form.controls.time.invalid &&
+                (form.controls.time.touched || form.controls.time.dirty)
+              "
             />
-            <lib-shared-form-error [show]="form.controls.time.touched || form.controls.time.dirty" [errors]="form.controls.time.errors" [messages]="errors.time" />
+            <lib-shared-form-error
+              [show]="form.controls.time.touched || form.controls.time.dirty"
+              [errors]="form.controls.time.errors"
+              [messages]="errors.time"
+            />
           </div>
         </div>
 
@@ -145,7 +185,11 @@
             [disabled]="isSubmitting()"
             (valueChange)="onStaffChange($event)"
           />
-          <lib-shared-form-error [show]="form.controls.staffId.touched || form.controls.staffId.dirty" [errors]="form.controls.staffId.errors" [messages]="errors.staffId" />
+          <lib-shared-form-error
+            [show]="form.controls.staffId.touched || form.controls.staffId.dirty"
+            [errors]="form.controls.staffId.errors"
+            [messages]="errors.staffId"
+          />
         </div>
       </div>
     </section>
