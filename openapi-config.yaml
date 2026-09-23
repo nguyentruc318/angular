@@ -1,0 +1,7 @@
+inputSpec: ./libs/shared/openapi/openapi.yaml
+generatorName: typescript-angular
+outputDir: ./apps/100-day-ang/src/app/generated-api
+additionalProperties:
+  ngVersion: '22.1.6'
+  providedInRoot: true
+  useSingleRequestParameter: true

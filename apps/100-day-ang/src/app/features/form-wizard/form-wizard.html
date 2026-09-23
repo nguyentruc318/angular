@@ -2,89 +2,44 @@
   <div class="mb-8">
     <p class="text-sm font-semibold text-violet-700">Form patterns</p>
     <h1 class="mt-1 text-3xl font-bold text-slate-900">Multi-step form</h1>
-    <p class="mt-2 text-slate-500">A single Reactive Form split into three focused steps.</p>
+    <p class="mt-2 text-slate-500">Three focused forms that save their data to a shared draft.</p>
   </div>
 
   @if (isComplete()) {
     <div class="rounded-2xl bg-white p-8 text-center shadow">
-      <div
-        class="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-100 text-xl text-emerald-700"
-      >
-        ?
-      </div>
+      <div class="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-100 text-xl text-emerald-700">✓</div>
       <h2 class="mt-4 text-xl font-bold text-slate-900">Form completed</h2>
-      <p class="mt-2 text-slate-500">
-        The form has passed validation and is ready to connect to an API.
-      </p>
-      <button
-        type="button"
-        class="mt-6 rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700"
-        (click)="startOver()"
-      >
-        Start over
-      </button>
+      <p class="mt-2 text-slate-500">The form has passed validation and is ready to connect to an API.</p>
+      <button type="button" class="mt-6 rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700" (click)="startOver()">Start over</button>
     </div>
   } @else {
     <div class="rounded-2xl bg-white p-6 shadow sm:p-8">
       <div class="mb-8">
-        <div class="mb-3 flex justify-between text-sm font-medium text-slate-500">
-          <span>Step {{ currentStep() + 1 }} of {{ steps.length }}</span>
-          <span>{{ steps[currentStep()] }}</span>
-        </div>
-        <div class="h-2 overflow-hidden rounded-full bg-slate-100">
-          <div
-            class="h-full rounded-full bg-violet-600 transition-all duration-300"
-            [style.width.%]="progress()"
-          ></div>
-        </div>
+        <div class="mb-3 flex justify-between text-sm font-medium text-slate-500"><span>{{ steps[currentStep()] }}</span></div>
+        <div class="h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-violet-600 transition-all duration-300" [style.width.%]="progress()"></div></div>
         <ol class="mt-4 grid grid-cols-3 gap-2 text-center text-xs font-medium sm:text-sm">
           @for (step of steps; track step; let index = $index) {
-            <li
-              [class.text-violet-700]="index <= currentStep()"
-              [class.text-slate-400]="index > currentStep()"
-            >
-              {{ index + 1 }}. {{ step }}
-            </li>
+            <li [class.text-violet-700]="index <= currentStep()" [class.text-slate-400]="index > currentStep()">{{ index + 1 }}. {{ step }}</li>
           }
         </ol>
       </div>
 
-      <form [formGroup]="form" (ngSubmit)="submit()">
-        @if (currentStep() === 0) {
-          <app-basic-info-section [group]="form.controls.basicInfo" />
-        } @else if (currentStep() === 1) {
-          <app-work-info-section [group]="form.controls.workInfo" />
-        } @else {
-          <app-access-settings-section [group]="form.controls.accessSettings" />
-        }
+      @if (currentStep() === 0) {
+        <app-basic-info-section />
+      } @else if (currentStep() === 1) {
+        <app-work-info-section />
+      } @else {
+        <app-access-settings-section />
+      }
 
-        <div class="mt-8 flex items-center justify-between border-t border-slate-200 pt-5">
-          <button
-            type="button"
-            class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
-            [disabled]="currentStep() === 0"
-            (click)="previous()"
-          >
-            Back
-          </button>
-          @if (currentStep() < steps.length - 1) {
-            <button
-              type="button"
-              class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700"
-              (click)="next()"
-            >
-              Continue
-            </button>
-          } @else {
-            <button
-              type="submit"
-              class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700"
-            >
-              Complete form
-            </button>
-          }
-        </div>
-      </form>
+      <div class="mt-8 flex items-center justify-between border-t border-slate-200 pt-5">
+        <button type="button" class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50" [disabled]="currentStep() === 0" (click)="previous()">Back</button>
+        @if (currentStep() < steps.length - 1) {
+          <button type="button" class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700" (click)="next()">Continue</button>
+        } @else {
+          <button type="button" class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700" (click)="submit()">Complete form</button>
+        }
+      </div>
     </div>
   }
 </section>
